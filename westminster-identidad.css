@@ -1,0 +1,137 @@
+/*
+ * westminster-identidad.css
+ * Fuente: Manual de Identidad Visual Colegio Westminster (versión 2.0, julio 2026)
+ *
+ * Este archivo es la fuente única de verdad para identidad visual en el portal.
+ * No modificar sin actualizar el manual en S5/_base/manual-identidad-westminster.md
+ */
+
+/* ─── GOOGLE FONTS ─────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+
+/* ─── TOKENS DE COLOR ───────────────────────────────────────────────────────
+ * Fuente: Manual §2 — Colores institucionales
+ * ─────────────────────────────────────────────────────────────────────────── */
+:root {
+  --w-azul:          #236192;  /* Azul Institucional — encabezados, franja de pie  */
+  --w-rojo:          #B3202A;  /* Rojo Institucional — línea inferior de pie       */
+  --w-azul-profundo: #00263A;  /* Azul Profundo       — fondos oscuros, especiales */
+  --w-gris:          #75787B;  /* Gris Institucional  — texto secundario, cierres  */
+  --w-arena:         #E3D6C8;  /* Arena Institucional — fondos suaves, tablas      */
+  --w-rojo-op:       #C8102E;  /* Rojo Operativo      — señalización, alertas      */
+  --w-cuerpo:        #4A4A4A;  /* Texto cuerpo        — nunca negro puro           */
+}
+
+/* ─── REGLAS DE USO (comentario normativo) ─────────────────────────────────
+ * · No usar rojo sobre azul ni azul sobre rojo.
+ * · Máximo dos colores dominantes por pieza.
+ * · Azul institucional solo para encabezados.
+ * · Texto secundario/cierre: --w-gris.
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+/* ─── BASE ──────────────────────────────────────────────────────────────────
+ * Tipografía: Montserrat (equivalente web de Neo Sans STD / Sanford)
+ * ─────────────────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  color: var(--w-cuerpo);
+  background: #f8f8f8;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── HEADER INSTITUCIONAL ──────────────────────────────────────────────────
+ * Fuente: Manual §2 — "Azul Institucional: encabezados"
+ *         Manual §2 — "Rojo Institucional: línea inferior de pie"
+ *         (misma estructura se aplica al encabezado)
+ * ─────────────────────────────────────────────────────────────────────────── */
+.w-header {
+  background: var(--w-azul);
+  color: #fff;
+  padding: 20px 32px 16px;
+  border-bottom: 4px solid var(--w-rojo);
+}
+.w-header__titulo {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+.w-header__subtitulo {
+  font-size: 13px;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+
+/* ─── FOOTER INSTITUCIONAL ──────────────────────────────────────────────────
+ * Fuente: Manual §2 — Pie institucional
+ *   · Franja principal: #236192 (Azul Institucional)
+ *   · Línea inferior:   #B3202A (Rojo Institucional)
+ *   · Logo y texto: Blanco
+ * ─────────────────────────────────────────────────────────────────────────── */
+.w-footer {
+  background: var(--w-azul);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+  padding: 16px 32px;
+  border-bottom: 4px solid var(--w-rojo);  /* línea inferior, no superior */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.w-footer strong {
+  color: #fff;
+}
+
+/* ─── COMPONENTES REUTILIZABLES ─────────────────────────────────────────────
+ * Recuadros simples sin íconos, tablas, separadores de sección.
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+/* Título de sección */
+.w-seccion-titulo {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--w-gris);
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Recuadro simple (uso general) */
+.w-recuadro {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 20px;
+}
+
+/* Recuadro con acento izquierdo (azul = neutro, rojo = alerta operativa) */
+.w-recuadro--acento {
+  border-left: 4px solid var(--w-azul);
+}
+.w-recuadro--alerta {
+  border-left: 4px solid var(--w-rojo-op);
+}
+
+/* Fondo arena (tablas, fondos suaves) */
+.w-fondo-arena {
+  background: var(--w-arena);
+}
+
+/* Texto secundario */
+.w-texto-secundario {
+  font-size: 12px;
+  color: var(--w-gris);
+}
