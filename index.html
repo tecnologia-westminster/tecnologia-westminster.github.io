@@ -11,16 +11,85 @@
       max-width: 860px;
       width: 100%;
       margin: 0 auto;
-      padding: 32px 24px;
+      padding: 0 24px 40px;
     }
 
+    /* ── TABS ── */
+    .tabs-nav {
+      display: flex;
+      border-bottom: 2px solid #ddd;
+      margin-bottom: 32px;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      padding: 14px 20px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      color: var(--w-gris);
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+    .tab-btn:hover {
+      color: var(--w-cuerpo);
+    }
+    .tab-btn.activo {
+      color: var(--w-azul);
+      border-bottom-color: var(--w-azul);
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.activo { display: block; }
+
+    /* ── INICIO ── */
+    .inicio-bloque {
+      margin-bottom: 28px;
+    }
+    .inicio-bloque h2 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--w-azul);
+      margin-bottom: 10px;
+    }
+    .inicio-bloque p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--w-cuerpo);
+      margin-bottom: 8px;
+    }
+
+    .accesos-rapidos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .acceso-rapido {
+      display: block;
+      padding: 12px 16px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--w-azul);
+      background: #fff;
+      border: 1px solid #ddd;
+      border-left: 4px solid var(--w-azul);
+    }
+    .acceso-rapido:hover {
+      border-left-color: var(--w-rojo);
+    }
+
+    /* ── SOLICITUDES ── */
     .acciones {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
       gap: 12px;
-      margin-bottom: 36px;
+      margin-bottom: 12px;
     }
-
     .accion {
       display: block;
       text-decoration: none;
@@ -38,15 +107,10 @@
       margin-bottom: 4px;
     }
 
-    .calendario-bloque {
-      margin-bottom: 36px;
-    }
-    .calendario-placeholder {
-      height: 300px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
+    .nota {
+      font-size: 12px;
+      color: var(--w-gris);
+      margin-top: 16px;
     }
   </style>
 </head>
@@ -59,32 +123,64 @@
 
   <main>
 
-    <p class="w-seccion-titulo">Solicitudes</p>
-    <div class="acciones">
-      <a href="#" class="accion w-recuadro w-recuadro--acento">
-        <strong>Reportar problema técnico</strong>
-        <span class="w-texto-secundario">PC, internet, proyector, impresora</span>
-      </a>
-      <a href="#" class="accion w-recuadro w-recuadro--acento">
-        <strong>Pedir mantenimiento</strong>
-        <span class="w-texto-secundario">Aire, mueble, electricidad, plomería</span>
-      </a>
-      <a href="#" class="accion w-recuadro w-recuadro--acento">
-        <strong>Reservar espacio</strong>
-        <span class="w-texto-secundario">Sala de video, informática, SUM, gimnasio</span>
-      </a>
-      <a href="#" class="accion w-recuadro w-recuadro--acento">
-        <strong>Agendar evento o visita</strong>
-        <span class="w-texto-secundario">Evento institucional, salida, clase especial</span>
-      </a>
-    </div>
+    <nav class="tabs-nav">
+      <button class="tab-btn activo" data-tab="inicio">Inicio</button>
+      <button class="tab-btn" data-tab="solicitudes">Solicitudes</button>
+    </nav>
 
-    <p class="w-seccion-titulo">Calendario institucional</p>
-    <div class="calendario-bloque w-recuadro">
-      <div class="calendario-placeholder w-fondo-arena w-texto-secundario">
-        Calendario institucional — próximamente
+    <!-- INICIO -->
+    <section class="tab-panel activo" id="tab-inicio">
+
+      <div class="inicio-bloque">
+        <h2>Portal institucional</h2>
+        <p>
+          Este portal centraliza las solicitudes de servicio técnico, mantenimiento,
+          reservas de espacios y agendamiento de eventos del Colegio Westminster.
+        </p>
+        <p>
+          Cada solicitud genera automáticamente un registro en el sistema y, cuando corresponde,
+          un evento en el calendario institucional. Para que algo aparezca en el calendario,
+          tiene que pasar por el portal.
+        </p>
       </div>
-    </div>
+
+      <div class="inicio-bloque w-recuadro" style="padding: 20px;">
+        <h2>¿Qué podés hacer desde acá?</h2>
+        <div class="accesos-rapidos" style="margin-top: 14px;">
+          <a href="#" class="acceso-rapido" data-goto="solicitudes">Reportar problema técnico</a>
+          <a href="#" class="acceso-rapido" data-goto="solicitudes">Pedir mantenimiento</a>
+          <a href="#" class="acceso-rapido" data-goto="solicitudes">Reservar un espacio</a>
+          <a href="#" class="acceso-rapido" data-goto="solicitudes">Agendar evento o visita</a>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- SOLICITUDES -->
+    <section class="tab-panel" id="tab-solicitudes">
+
+      <p class="w-seccion-titulo">¿Qué necesitás?</p>
+      <div class="acciones">
+        <a href="#" class="accion w-recuadro w-recuadro--acento">
+          <strong>Reportar problema técnico</strong>
+          <span class="w-texto-secundario">PC, internet, proyector, impresora</span>
+        </a>
+        <a href="#" class="accion w-recuadro w-recuadro--acento">
+          <strong>Pedir mantenimiento</strong>
+          <span class="w-texto-secundario">Aire, mueble, electricidad, plomería</span>
+        </a>
+        <a href="#" class="accion w-recuadro w-recuadro--acento">
+          <strong>Reservar espacio</strong>
+          <span class="w-texto-secundario">Sala de video, informática, SUM, gimnasio</span>
+        </a>
+        <a href="#" class="accion w-recuadro w-recuadro--acento">
+          <strong>Agendar evento o visita</strong>
+          <span class="w-texto-secundario">Evento institucional, salida, clase especial</span>
+        </a>
+      </div>
+      <p class="nota">Completá los datos de la solicitud. El sistema determina automáticamente el área responsable y la prioridad.</p>
+
+    </section>
 
   </main>
 
@@ -92,6 +188,25 @@
     <span><strong>Colegio Westminster</strong> · Peña 141, Banfield, Lomas de Zamora</span>
     <span>Portal institucional — uso interno</span>
   </footer>
+
+  <script>
+    const btns = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.tab-panel');
+
+    function activarTab(nombre) {
+      btns.forEach(b => b.classList.toggle('activo', b.dataset.tab === nombre));
+      panels.forEach(p => p.classList.toggle('activo', p.id === 'tab-' + nombre));
+    }
+
+    btns.forEach(btn => btn.addEventListener('click', () => activarTab(btn.dataset.tab)));
+
+    document.querySelectorAll('[data-goto]').forEach(el => {
+      el.addEventListener('click', e => {
+        e.preventDefault();
+        activarTab(el.dataset.goto);
+      });
+    });
+  </script>
 
 </body>
 </html>
