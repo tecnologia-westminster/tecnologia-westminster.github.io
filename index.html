@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Institucional — Colegio Westminster</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --azul:    #236192;
+      --rojo:    #B3202A;
+      --oscuro:  #00263A;
+      --gris:    #75787B;
+      --arena:   #E3D6C8;
+      --cuerpo:  #4A4A4A;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      color: var(--cuerpo);
+      background: #f8f8f8;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--azul);
+      color: #fff;
+      padding: 20px 32px 16px;
+      border-bottom: 4px solid var(--rojo);
+    }
+    header h1 {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    header p {
+      font-size: 13px;
+      opacity: 0.85;
+      margin-top: 4px;
+    }
+
+    /* MAIN */
+    main {
+      flex: 1;
+      max-width: 860px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    /* SECCIÓN: SOLICITUDES */
+    .seccion-titulo {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .acciones {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+
+    .accion {
+      display: block;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-left: 4px solid var(--azul);
+      padding: 18px 20px;
+      text-decoration: none;
+      color: var(--cuerpo);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .accion:hover {
+      border-left-color: var(--rojo);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+    .accion strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--azul);
+      margin-bottom: 4px;
+    }
+    .accion span {
+      font-size: 12px;
+      color: var(--gris);
+    }
+
+    /* SECCIÓN: CALENDARIO */
+    .calendario-bloque {
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 20px;
+      margin-bottom: 36px;
+    }
+    .calendario-placeholder {
+      height: 300px;
+      background: var(--arena);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: var(--gris);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--oscuro);
+      color: rgba(255,255,255,0.7);
+      font-size: 12px;
+      padding: 16px 32px;
+      border-top: 3px solid var(--rojo);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    footer strong {
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Colegio Westminster</h1>
+    <p>Portal Institucional — Peña 141, Banfield, Lomas de Zamora</p>
+  </header>
+
+  <main>
+
+    <p class="seccion-titulo">Solicitudes</p>
+    <div class="acciones">
+      <a href="#" class="accion">
+        <strong>Reportar problema técnico</strong>
+        <span>PC, internet, proyector, impresora</span>
+      </a>
+      <a href="#" class="accion">
+        <strong>Pedir mantenimiento</strong>
+        <span>Aire, mueble, electricidad, plomería</span>
+      </a>
+      <a href="#" class="accion">
+        <strong>Reservar espacio</strong>
+        <span>Sala de video, informática, SUM, gimnasio</span>
+      </a>
+      <a href="#" class="accion">
+        <strong>Agendar evento o visita</strong>
+        <span>Evento institucional, salida, clase especial</span>
+      </a>
+    </div>
+
+    <p class="seccion-titulo">Calendario institucional</p>
+    <div class="calendario-bloque">
+      <div class="calendario-placeholder">
+        Calendario institucional — próximamente
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <span><strong>Colegio Westminster</strong> · Peña 141, Banfield, Lomas de Zamora</span>
+    <span>Portal institucional — uso interno</span>
+  </footer>
+
+</body>
+</html>
