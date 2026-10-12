@@ -164,6 +164,14 @@
       box-shadow: 0 0 0 3px rgba(35, 97, 146, 0.10);
     }
 
+    .form-fila {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 16px;
+    }
+    @media (max-width: 580px) { .form-fila { grid-template-columns: 1fr; } }
+    .form-select:disabled { background: var(--w-arena-suave); color: var(--w-gris); }
+
     .grupo-categorias { margin-bottom: 18px; }
     .grupo-categorias:last-child { margin-bottom: 0; }
     .grupo-categorias .w-rotulo { font-weight: 400; margin-bottom: 6px; }
@@ -192,7 +200,7 @@
       font-weight: 500;
     }
 
-    .campo-compra { display: none; }
+    .campo-oculto { display: none; }
 
     .aviso-form {
       display: none;
@@ -432,60 +440,44 @@
 
         <div class="w-recuadro" id="form-solicitud">
 
-          <div class="form-seccion">
-            <label class="w-rotulo" for="sel-sector">Nivel o sector</label>
-            <select class="form-select" id="sel-sector">
-              <option value="">Seleccioná una opción</option>
-              <option>Jardín</option>
-              <option>Primaria</option>
-              <option>Secundaria</option>
-              <option>Administración</option>
-              <option>Dirección</option>
-              <option>Espacios comunes</option>
-            </select>
+          <div class="form-fila">
+            <div class="form-seccion">
+              <label class="w-rotulo" for="sel-nivel">Nivel</label>
+              <select class="form-select" id="sel-nivel">
+                <option value="">Seleccioná el nivel</option>
+              </select>
+            </div>
+            <div class="form-seccion">
+              <label class="w-rotulo" for="sel-aula">Aula o espacio</label>
+              <select class="form-select" id="sel-aula" disabled>
+                <option value="">Primero elegí el nivel</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-seccion campo-oculto" id="campo-otro-espacio">
+            <label class="w-rotulo" for="txt-otro-espacio">¿Qué espacio?</label>
+            <input class="form-select" id="txt-otro-espacio" maxlength="60" placeholder="Por ejemplo: pasillo del primer piso">
           </div>
 
           <div class="form-seccion">
             <span class="w-rotulo">Categoría</span>
-
-            <div class="grupo-categorias">
-              <span class="w-rotulo">Soporte técnico</span>
-              <div class="categorias-grid">
-                <button class="categoria-btn" data-categoria="Sin internet / sin acceso">Sin internet o sin acceso</button>
-                <button class="categoria-btn" data-categoria="PC no enciende / pantalla negra">PC no enciende o pantalla negra</button>
-                <button class="categoria-btn" data-categoria="Proyector sin imagen / no conecta">Proyector sin imagen o no conecta</button>
-                <button class="categoria-btn" data-categoria="Periférico roto (mouse, teclado, auriculares)">Periférico roto</button>
-                <button class="categoria-btn" data-categoria="Consulta o instalación de software">Software o consulta</button>
-              </div>
-            </div>
-
-            <div class="grupo-categorias">
-              <span class="w-rotulo">Mantenimiento</span>
-              <div class="categorias-grid">
-                <button class="categoria-btn" data-categoria="Aire acondicionado">Aire acondicionado</button>
-                <button class="categoria-btn" data-categoria="Electricidad / luz / tomacorriente">Electricidad o luz</button>
-                <button class="categoria-btn" data-categoria="Mueble roto / puerta / ventana">Mueble, puerta o ventana</button>
-                <button class="categoria-btn" data-categoria="Plomería">Plomería</button>
-                <button class="categoria-btn" data-categoria="Limpieza extraordinaria">Limpieza extraordinaria</button>
-              </div>
-            </div>
-
-            <div class="grupo-categorias">
-              <span class="w-rotulo">Compras</span>
-              <div class="categorias-grid">
-                <button class="categoria-btn" data-categoria="Solicitud de compra">Solicitud de compra</button>
-              </div>
-            </div>
+            <div id="categorias"></div>
           </div>
 
-          <div class="form-seccion campo-compra" id="campo-compra">
-            <label class="w-rotulo" for="txt-compra">Descripción de la compra</label>
-            <textarea class="form-textarea" id="txt-compra" placeholder="Indicá qué necesitás adquirir y para qué área."></textarea>
+          <div class="form-seccion campo-oculto" id="campo-descripcion">
+            <span class="w-rotulo">¿Qué pasa?</span>
+            <div class="categorias-grid" id="descripciones"></div>
+          </div>
+
+          <div class="form-seccion campo-oculto" id="campo-detalle">
+            <label class="w-rotulo" for="txt-detalle" id="rotulo-detalle">Detalle</label>
+            <textarea class="form-textarea" id="txt-detalle" maxlength="500"></textarea>
           </div>
 
           <div>
-            <button class="w-boton" id="btn-enviar" disabled>Enviar solicitud</button>
-            <p class="aviso-form" id="aviso-form">Seleccioná el nivel o sector antes de enviar.</p>
+            <button class="w-boton" id="btn-enviar">Enviar solicitud</button>
+            <p class="aviso-form" id="aviso-form"></p>
           </div>
 
         </div>
@@ -493,6 +485,7 @@
         <div class="w-recuadro w-recuadro--suave confirmacion" id="confirmacion">
           <p><strong>Solicitud registrada.</strong></p>
           <p id="conf-texto"></p>
+          <p id="conf-lugar"></p>
           <p class="ruta-info" id="conf-ruta"></p>
           <div style="margin-top:18px;">
             <button class="w-boton w-boton--secundario" id="btn-nueva">Nueva solicitud</button>
@@ -884,6 +877,7 @@
   </footer>
 
   <script src="digital-hitos.js"></script>
+  <script src="solicitudes-config.js"></script>
   <script>
     // TABS
     const tabPanels = document.querySelectorAll('.tab-panel');
@@ -926,63 +920,177 @@
       });
     });
 
-    // SOLICITUDES — ruteo automático
-    const ruteo = {
-      'Sin internet / sin acceso':                      { equipo: 'ST',              prioridad: 'Crítico' },
-      'PC no enciende / pantalla negra':                { equipo: 'ST',              prioridad: 'Alto'    },
-      'Proyector sin imagen / no conecta':              { equipo: 'ST',              prioridad: 'Alto'    },
-      'Periférico roto (mouse, teclado, auriculares)':  { equipo: 'ST',              prioridad: 'Medio'   },
-      'Consulta o instalación de software':             { equipo: 'ST',              prioridad: 'Bajo'    },
-      'Aire acondicionado':                             { equipo: 'Mantenimiento',   prioridad: 'Alto'    },
-      'Electricidad / luz / tomacorriente':             { equipo: 'Mantenimiento',   prioridad: 'Alto'    },
-      'Mueble roto / puerta / ventana':                 { equipo: 'Mantenimiento',   prioridad: 'Medio'   },
-      'Plomería':                                       { equipo: 'Mantenimiento',   prioridad: 'Alto'    },
-      'Limpieza extraordinaria':                        { equipo: 'Mantenimiento',   prioridad: 'Bajo'    },
-      'Solicitud de compra':                            { equipo: 'ST + Mantenimiento', prioridad: 'Bajo', textoLibre: true }
-    };
+    // SOLICITUDES — formulario armado desde CONFIG_SOLICITUDES (solicitudes-config.js)
+    const CFG = CONFIG_SOLICITUDES;
+    const OTRO_ESPACIO = 'Otro espacio';
+    const OTRO_PROBLEMA = 'Otro problema';
+
+    const selNivel = document.getElementById('sel-nivel');
+    const selAula = document.getElementById('sel-aula');
+    const txtOtroEspacio = document.getElementById('txt-otro-espacio');
+    const campoOtroEspacio = document.getElementById('campo-otro-espacio');
+    const contCategorias = document.getElementById('categorias');
+    const campoDescripcion = document.getElementById('campo-descripcion');
+    const contDescripciones = document.getElementById('descripciones');
+    const campoDetalle = document.getElementById('campo-detalle');
+    const rotuloDetalle = document.getElementById('rotulo-detalle');
+    const txtDetalle = document.getElementById('txt-detalle');
+    const aviso = document.getElementById('aviso-form');
 
     let categoriaActual = null;
-    const aviso = document.getElementById('aviso-form');
-    const selSector = document.getElementById('sel-sector');
+    let descripcionActual = null;
 
-    selSector.addEventListener('change', () => { aviso.style.display = 'none'; });
+    function opcion(texto, valor) {
+      const o = document.createElement('option');
+      o.textContent = texto;
+      o.value = valor === undefined ? texto : valor;
+      return o;
+    }
 
-    document.querySelectorAll('.categoria-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.categoria-btn').forEach(b => b.classList.remove('seleccionado'));
-        btn.classList.add('seleccionado');
-        categoriaActual = btn.dataset.categoria;
+    function ocultarAviso() { aviso.style.display = 'none'; }
 
-        const esCompra = ruteo[categoriaActual]?.textoLibre;
-        document.getElementById('campo-compra').style.display = esCompra ? 'block' : 'none';
-        document.getElementById('btn-enviar').disabled = false;
+    // Nivel → aulas y espacios del nivel
+    CFG.niveles.forEach(n => selNivel.appendChild(opcion(n)));
+
+    selNivel.addEventListener('change', () => {
+      selAula.replaceChildren();
+      campoOtroEspacio.style.display = 'none';
+      const lugares = CFG.aulas[selNivel.value];
+      if (!lugares) {
+        selAula.appendChild(opcion('Primero elegí el nivel', ''));
+        selAula.disabled = true;
+        return;
+      }
+      selAula.appendChild(opcion('Seleccioná el aula o espacio', ''));
+      [['Aulas', lugares.aulas], ['Espacios', lugares.espacios]].forEach(([titulo, lista]) => {
+        if (!lista.length) return;
+        const g = document.createElement('optgroup');
+        g.label = titulo;
+        lista.forEach(l => g.appendChild(opcion(l)));
+        selAula.appendChild(g);
       });
+      selAula.appendChild(opcion(OTRO_ESPACIO));
+      selAula.disabled = false;
+      ocultarAviso();
     });
 
-    document.getElementById('btn-enviar').addEventListener('click', () => {
-      const sector = selSector.value;
-      if (!sector) { aviso.style.display = 'block'; selSector.focus(); return; }
+    selAula.addEventListener('change', () => {
+      campoOtroEspacio.style.display = selAula.value === OTRO_ESPACIO ? 'block' : 'none';
+      ocultarAviso();
+    });
 
-      const r = ruteo[categoriaActual];
+    // Categorías agrupadas por área principal
+    Object.entries(CFG.areas).forEach(([clave, nombreArea]) => {
+      const cats = CFG.categorias.filter(c => c.area === clave);
+      if (!cats.length) return;
+      const grupo = crearEl('div', 'grupo-categorias');
+      grupo.appendChild(crearEl('span', 'w-rotulo', nombreArea));
+      const grid = crearEl('div', 'categorias-grid');
+      cats.forEach(c => {
+        const b = crearEl('button', 'categoria-btn', c.nombre);
+        b.type = 'button';
+        b.addEventListener('click', () => elegirCategoria(c, b));
+        grid.appendChild(b);
+      });
+      grupo.appendChild(grid);
+      contCategorias.appendChild(grupo);
+    });
+
+    function crearEl(tag, clase, texto) {
+      const el = document.createElement(tag);
+      if (clase) el.className = clase;
+      if (texto) el.textContent = texto;
+      return el;
+    }
+
+    function elegirCategoria(cat, btn) {
+      contCategorias.querySelectorAll('.categoria-btn').forEach(b => b.classList.toggle('seleccionado', b === btn));
+      categoriaActual = cat;
+      descripcionActual = null;
+      contDescripciones.replaceChildren();
+      ocultarAviso();
+
+      if (cat.textoLibre) {
+        campoDescripcion.style.display = 'none';
+        mostrarDetalle();
+        return;
+      }
+      cat.descripciones.forEach(d => {
+        const b = crearEl('button', 'categoria-btn', d);
+        b.type = 'button';
+        b.addEventListener('click', () => {
+          contDescripciones.querySelectorAll('.categoria-btn').forEach(x => x.classList.toggle('seleccionado', x === b));
+          descripcionActual = d;
+          mostrarDetalle();
+          ocultarAviso();
+        });
+        contDescripciones.appendChild(b);
+      });
+      campoDescripcion.style.display = 'block';
+      campoDetalle.style.display = 'none';
+    }
+
+    function detalleObligatorio() {
+      return categoriaActual && (categoriaActual.textoLibre || descripcionActual === OTRO_PROBLEMA);
+    }
+
+    function mostrarDetalle() {
+      const obligatorio = detalleObligatorio();
+      rotuloDetalle.textContent = categoriaActual.textoLibre ? 'Qué necesitás'
+        : obligatorio ? 'Contá qué pasa' : 'Detalle adicional (opcional)';
+      txtDetalle.placeholder = categoriaActual.textoLibre ? 'Indicá qué necesitás adquirir y para qué área.'
+        : obligatorio ? 'Describí brevemente el problema.' : 'Algo más que ayude a resolverlo.';
+      campoDetalle.style.display = 'block';
+    }
+
+    function faltante() {
+      if (!selNivel.value) return [selNivel, 'Elegí el nivel.'];
+      if (!selAula.value) return [selAula, 'Elegí el aula o espacio.'];
+      if (selAula.value === OTRO_ESPACIO && !txtOtroEspacio.value.trim()) return [txtOtroEspacio, 'Indicá qué espacio.'];
+      if (!categoriaActual) return [contCategorias, 'Elegí una categoría.'];
+      if (!categoriaActual.textoLibre && !descripcionActual) return [contDescripciones, 'Elegí qué pasa.'];
+      if (detalleObligatorio() && !txtDetalle.value.trim()) return [txtDetalle, 'Completá el detalle.'];
+      return null;
+    }
+
+    document.getElementById('btn-enviar').addEventListener('click', () => {
+      const falta = faltante();
+      if (falta) {
+        aviso.textContent = falta[1];
+        aviso.style.display = 'block';
+        falta[0].scrollIntoView({ block: 'center', behavior: 'smooth' });
+        if (falta[0].focus) falta[0].focus({ preventScroll: true });
+        return;
+      }
+
+      const c = categoriaActual;
+      const lugar = selAula.value === OTRO_ESPACIO ? txtOtroEspacio.value.trim() : selAula.value;
+      const ruta = ['Área: ' + CFG.areas[c.area]];
+      if (c.avisoA) ruta.push('Aviso a: ' + CFG.areas[c.avisoA]);
+      ruta.push('Prioridad: ' + c.prioridad);
+
       document.getElementById('form-solicitud').style.display = 'none';
-      const conf = document.getElementById('confirmacion');
-      conf.style.display = 'block';
+      document.getElementById('confirmacion').style.display = 'block';
       document.getElementById('conf-texto').textContent =
-        `${categoriaActual} — ${sector}.`;
-      document.getElementById('conf-ruta').textContent =
-        `Equipo: ${r.equipo} · Prioridad: ${r.prioridad}`;
+        descripcionActual ? `${c.nombre} — ${descripcionActual}.` : `${c.nombre}.`;
+      document.getElementById('conf-lugar').textContent = `${selNivel.value} · ${lugar}`;
+      document.getElementById('conf-ruta').textContent = ruta.join(' · ');
     });
 
     document.getElementById('btn-nueva').addEventListener('click', () => {
       document.getElementById('form-solicitud').style.display = 'block';
       document.getElementById('confirmacion').style.display = 'none';
-      document.querySelectorAll('.categoria-btn').forEach(b => b.classList.remove('seleccionado'));
-      document.getElementById('campo-compra').style.display = 'none';
-      document.getElementById('btn-enviar').disabled = true;
-      aviso.style.display = 'none';
-      selSector.value = '';
-      document.getElementById('txt-compra').value = '';
+      selNivel.value = '';
+      selNivel.dispatchEvent(new Event('change'));
+      txtOtroEspacio.value = '';
+      txtDetalle.value = '';
+      contCategorias.querySelectorAll('.categoria-btn').forEach(b => b.classList.remove('seleccionado'));
+      contDescripciones.replaceChildren();
+      campoDescripcion.style.display = 'none';
+      campoDetalle.style.display = 'none';
       categoriaActual = null;
+      descripcionActual = null;
+      ocultarAviso();
     });
 
     // SUBTABS — Institucional y Digital
