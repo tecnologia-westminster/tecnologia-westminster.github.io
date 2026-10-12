@@ -197,6 +197,25 @@
       margin-top: 10px;
     }
 
+    /* INGRESO */
+    .ingreso { max-width: 460px; }
+    .ingreso p { font-size: 13px; margin: 8px 0 18px; }
+    #btn-google { min-height: 44px; }
+    #infra-contenido { display: none; }
+    .sesion {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 4px 16px;
+      font-size: 12px;
+      color: var(--w-gris);
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--w-arena-linea);
+    }
+    .sesion .volver { margin-bottom: 0; }
+
     /* CONFIRMACIÓN */
     .confirmacion { display: none; }
     .confirmacion p { font-size: 14px; margin-bottom: 4px; }
@@ -389,6 +408,20 @@
       <h2 class="w-titulo">Infraestructura / IT</h2>
       <p class="w-bajada">Mantenimiento edilicio, soporte técnico, redes y conectividad.</p>
 
+      <div class="w-recuadro ingreso" id="ingreso">
+        <span class="w-rotulo">Ingreso</span>
+        <p>Para usar estas herramientas, ingresá con tu cuenta del colegio (@colegiowestminster.com.ar).</p>
+        <div id="btn-google"></div>
+        <p class="aviso-form" id="aviso-ingreso"></p>
+      </div>
+
+      <div id="infra-contenido">
+
+      <div class="sesion">
+        <span id="sesion-usuario"></span>
+        <button class="volver" id="btn-salir">Cerrar sesión</button>
+      </div>
+
       <div class="herramientas-grid herramientas-selector">
         <button class="herramienta seleccionada" data-herramienta="solicitudes">
           <strong>Solicitudes</strong>
@@ -482,6 +515,8 @@
       <p class="w-bajada">Reserva de espacios y agendamiento institucional con Google Calendar.</p>
       <div class="w-recuadro w-recuadro--suave proximamente">Próximamente disponible.</div>
     </div>
+
+      </div>
 
     </section>
 
@@ -851,13 +886,113 @@
 
   <script src="digital-hitos.js"></script>
   <script src="solicitudes-config.js"></script>
+  <script src="portal-config.js"></script>
   <script>
     // TABS
     const tabPanels = document.querySelectorAll('.tab-panel');
 
     function activarTab(nombre) {
       tabPanels.forEach(p => p.classList.toggle('activo', p.id === 'tab-' + nombre));
+      if (nombre === 'infra-it') verificarSesion();
     }
+
+    // INGRESO — Infraestructura / IT pide cuenta del colegio (Google Identity Services).
+    // Institucional y Alfabetización digital son públicas.
+    const CLAVE_SESION = 'portal-sesion';
+    const avisoIngreso = document.getElementById('aviso-ingreso');
+    let sesion = null;   // { idToken, email, nombre, exp, perfil }
+
+    function leerToken(idToken) {
+      const base = idToken.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+      const bytes = Uint8Array.from(atob(base), c => c.charCodeAt(0));
+      return JSON.parse(new TextDecoder().decode(bytes));
+    }
+
+    function llamarServidor(accion, datos, idToken) {
+      return fetch(PORTAL_CONFIG.APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },   // evita el preflight CORS
+        body: JSON.stringify(Object.assign({ accion, idToken }, datos))
+      }).then(r => r.json());
+    }
+
+    function mostrarAvisoIngreso(texto) {
+      avisoIngreso.textContent = texto;
+      avisoIngreso.style.display = 'block';
+      if (window.google) google.accounts.id.disableAutoSelect();
+    }
+
+    async function alIngresar(respuesta) {
+      const datos = leerToken(respuesta.credential);
+      if (datos.hd !== PORTAL_CONFIG.DOMINIO) {
+        return mostrarAvisoIngreso('Ingresá con tu cuenta @' + PORTAL_CONFIG.DOMINIO + '.');
+      }
+      const nueva = {
+        idToken: respuesta.credential,
+        email: datos.email,
+        nombre: datos.name || datos.email,
+        exp: datos.exp * 1000,
+        perfil: null
+      };
+      // Con el Apps Script desplegado, el servidor decide si la cuenta figura en Acceso o Responsables
+      if (PORTAL_CONFIG.APPS_SCRIPT_URL) {
+        try {
+          const perfil = await llamarServidor('perfil', {}, nueva.idToken);
+          if (!perfil.ok) throw new Error(perfil.error);
+          if (!perfil.acceso) {
+            return mostrarAvisoIngreso('Tu cuenta no tiene acceso al portal. Si lo necesitás, escribí a tecnologia@' + PORTAL_CONFIG.DOMINIO + '.');
+          }
+          nueva.perfil = perfil;
+        } catch (err) {
+          return mostrarAvisoIngreso('No se pudo verificar el acceso. Probá de nuevo en unos minutos.');
+        }
+      }
+      sesion = nueva;
+      try { sessionStorage.setItem(CLAVE_SESION, JSON.stringify(sesion)); } catch (e) {}
+      mostrarSesion();
+    }
+
+    function mostrarSesion() {
+      document.getElementById('ingreso').style.display = sesion ? 'none' : 'block';
+      document.getElementById('infra-contenido').style.display = sesion ? 'block' : 'none';
+      document.getElementById('sesion-usuario').textContent = sesion ? sesion.nombre + ' · ' + sesion.email : '';
+      if (sesion) avisoIngreso.style.display = 'none';
+    }
+
+    function cerrarSesion() {
+      sesion = null;
+      try { sessionStorage.removeItem(CLAVE_SESION); } catch (e) {}
+      if (window.google) google.accounts.id.disableAutoSelect();
+      mostrarSesion();
+    }
+
+    // El ID token dura una hora: vencido, se vuelve a pedir el ingreso
+    function verificarSesion() {
+      if (sesion && sesion.exp < Date.now() + 60000) cerrarSesion();
+      if (!sesion && window.google) google.accounts.id.prompt();
+    }
+
+    function iniciarGoogle() {
+      google.accounts.id.initialize({
+        client_id: PORTAL_CONFIG.CLIENT_ID,
+        callback: alIngresar,
+        hd: PORTAL_CONFIG.DOMINIO,
+        auto_select: true,
+        cancel_on_tap_outside: true,
+        use_fedcm_for_prompt: true
+      });
+      google.accounts.id.renderButton(document.getElementById('btn-google'), {
+        theme: 'outline', size: 'large', text: 'signin_with', locale: 'es'
+      });
+      if (document.getElementById('tab-infra-it').classList.contains('activo')) verificarSesion();
+    }
+
+    try {
+      const guardada = JSON.parse(sessionStorage.getItem(CLAVE_SESION));
+      if (guardada && guardada.exp > Date.now() + 60000) sesion = guardada;
+    } catch (e) {}
+    mostrarSesion();
+    document.getElementById('btn-salir').addEventListener('click', cerrarSesion);
 
     // ÁREAS — Inicio: cada área despliega sus herramientas
     document.querySelectorAll('.area-btn').forEach(btn => {
@@ -1166,6 +1301,7 @@
     });
     mostrarNivel('inicial');
   </script>
+  <script src="https://accounts.google.com/gsi/client" async onload="iniciarGoogle()"></script>
 
 </body>
 </html>
