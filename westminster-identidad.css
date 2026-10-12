@@ -3,11 +3,11 @@
  * Fuente: Manual de Identidad Visual Colegio Westminster (versión 2.0, julio 2026)
  *
  * Este archivo es la fuente única de verdad para identidad visual en el portal.
- * No modificar sin actualizar el manual en S5/_base/manual-identidad-westminster.md
+ * No modificar los tokens sin actualizar el manual en S5/_base/manual-identidad-westminster.md
  */
 
 /* ─── GOOGLE FONTS ─────────────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap');
 
 /* ─── TOKENS DE COLOR ───────────────────────────────────────────────────────
  * Fuente: Manual §2 — Colores institucionales
@@ -20,12 +20,18 @@
   --w-arena:         #E3D6C8;  /* Arena Institucional — fondos suaves, tablas      */
   --w-rojo-op:       #C8102E;  /* Rojo Operativo      — señalización, alertas      */
   --w-cuerpo:        #4A4A4A;  /* Texto cuerpo        — nunca negro puro           */
+
+  /* Matices derivados del Arena (no son colores nuevos: Arena sobre blanco) */
+  --w-arena-suave:   #F7F2ED;  /* Arena ~25% — fondo de página y recuadros suaves  */
+  --w-arena-linea:   #EAE0D5;  /* Arena ~65% — líneas finas y bordes               */
 }
 
 /* ─── REGLAS DE USO (comentario normativo) ─────────────────────────────────
  * · No usar rojo sobre azul ni azul sobre rojo.
- * · Máximo dos colores dominantes por pieza.
- * · Azul institucional solo para encabezados.
+ * · Máximo dos colores dominantes por pieza → en el portal: Azul + Arena.
+ * · Azul institucional solo para encabezados. Las acciones usan Azul Profundo.
+ * · Rojo Institucional solo en la línea inferior del pie.
+ * · Rojo Operativo solo para señalización (avisos, errores).
  * · Texto secundario/cierre: --w-gris.
  * ─────────────────────────────────────────────────────────────────────────── */
 
@@ -43,33 +49,39 @@
 body {
   font-family: 'Montserrat', sans-serif;
   font-size: 15px;
+  font-weight: 400;
+  line-height: 1.6;
   color: var(--w-cuerpo);
-  background: #f8f8f8;
+  background: var(--w-arena-suave);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ─── HEADER INSTITUCIONAL ──────────────────────────────────────────────────
  * Fuente: Manual §2 — "Azul Institucional: encabezados"
- *         Manual §2 — "Rojo Institucional: línea inferior de pie"
- *         (misma estructura se aplica al encabezado)
+ * Sin línea roja: el manual la asigna solo al pie.
  * ─────────────────────────────────────────────────────────────────────────── */
 .w-header {
   background: var(--w-azul);
   color: #fff;
-  padding: 20px 32px 16px;
-  border-bottom: 4px solid var(--w-rojo);
+  padding: 36px 24px 32px;
+}
+.w-header__interior {
+  max-width: 820px;
+  margin: 0 auto;
 }
 .w-header__titulo {
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
 }
 .w-header__subtitulo {
   font-size: 13px;
+  font-weight: 300;
   opacity: 0.85;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 /* ─── FOOTER INSTITUCIONAL ──────────────────────────────────────────────────
@@ -80,49 +92,73 @@ body {
  * ─────────────────────────────────────────────────────────────────────────── */
 .w-footer {
   background: var(--w-azul);
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.85);
   font-size: 12px;
-  padding: 16px 32px;
-  border-bottom: 4px solid var(--w-rojo);  /* línea inferior, no superior */
+  font-weight: 300;
+  padding: 20px 24px;
+  border-bottom: 3px solid var(--w-rojo);  /* línea inferior, no superior */
+}
+.w-footer__interior {
+  max-width: 820px;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
+  gap: 8px 16px;
   flex-wrap: wrap;
 }
 .w-footer strong {
   color: #fff;
+  font-weight: 500;
 }
 
 /* ─── COMPONENTES REUTILIZABLES ─────────────────────────────────────────────
  * Recuadros simples sin íconos, tablas, separadores de sección.
  * ─────────────────────────────────────────────────────────────────────────── */
 
-/* Título de sección */
-.w-seccion-titulo {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+/* Encabezado de sección — Azul Institucional (único uso del azul en texto) */
+.w-titulo {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--w-azul);
+  margin-bottom: 6px;
+}
+
+/* Bajada de sección */
+.w-bajada {
+  font-size: 13px;
+  font-weight: 400;
   color: var(--w-gris);
-  margin-bottom: 12px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+
+/* Rótulo pequeño (etiquetas de campo, subtítulos de grupo) */
+.w-rotulo {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--w-gris);
+  letter-spacing: 0.3px;
+  margin-bottom: 8px;
 }
 
 /* Recuadro simple (uso general) */
 .w-recuadro {
   background: #fff;
-  border: 1px solid #ddd;
-  padding: 20px;
+  border: 1px solid var(--w-arena-linea);
+  border-radius: 4px;
+  padding: 20px 22px;
 }
 
-/* Recuadro con acento izquierdo (azul = neutro, rojo = alerta operativa) */
-.w-recuadro--acento {
-  border-left: 4px solid var(--w-azul);
+/* Recuadro suave (avisos neutros, estados vacíos) */
+.w-recuadro--suave {
+  background: var(--w-arena-suave);
+  border-color: var(--w-arena-linea);
 }
+
+/* Recuadro de alerta operativa */
 .w-recuadro--alerta {
-  border-left: 4px solid var(--w-rojo-op);
+  border-left: 2px solid var(--w-rojo-op);
 }
 
 /* Fondo arena (tablas, fondos suaves) */
@@ -134,4 +170,41 @@ body {
 .w-texto-secundario {
   font-size: 12px;
   color: var(--w-gris);
+}
+
+/* Botón principal — Azul Profundo (el azul institucional queda para encabezados) */
+.w-boton {
+  display: inline-block;
+  padding: 11px 26px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  background: var(--w-azul-profundo);
+  border: 1px solid var(--w-azul-profundo);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.w-boton:hover { opacity: 0.88; }
+.w-boton:disabled {
+  background: var(--w-arena-suave);
+  border-color: var(--w-arena-linea);
+  color: var(--w-gris);
+  cursor: default;
+  opacity: 1;
+}
+
+/* Botón secundario */
+.w-boton--secundario {
+  background: #fff;
+  color: var(--w-azul-profundo);
+  border-color: var(--w-arena-linea);
+}
+.w-boton--secundario:hover { border-color: var(--w-gris); opacity: 1; }
+
+/* Foco accesible */
+:focus-visible {
+  outline: 2px solid rgba(35, 97, 146, 0.35);
+  outline-offset: 2px;
 }
