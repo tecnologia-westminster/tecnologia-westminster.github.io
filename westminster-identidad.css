@@ -111,6 +111,11 @@ body {
   color: #fff;
   font-weight: 500;
 }
+.w-footer a {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
 
 /* ─── COMPONENTES REUTILIZABLES ─────────────────────────────────────────────
  * Recuadros simples sin íconos, tablas, separadores de sección.

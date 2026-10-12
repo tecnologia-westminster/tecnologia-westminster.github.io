@@ -2,6 +2,7 @@
  * solicitudes-config.js
  * Configuración del formulario de solicitudes: niveles, aulas, categorías y descripciones.
  * Fuente: planilla principal portal-westminster (pestañas Niveles, Aulas, Categorías, Descripciones).
+ * Las categorías de IT llevan grupo (Soporte técnico · Redes y conectividad); las de Infraestructura no.
  * Es una copia: cuando el Apps Script esté desplegado, el portal lee la planilla y este archivo
  * queda como respaldo. Hasta entonces, al cambiar la planilla hay que actualizar este archivo.
  * Copiado de la planilla: 2026-10-12.
@@ -37,6 +38,7 @@ const CONFIG_SOLICITUDES = {
     {
       nombre: 'Sin internet / sin acceso',
       area: 'st',
+      grupo: 'Soporte técnico',
       avisoA: '',
       prioridad: 'Crítico',
       textoLibre: false,
@@ -45,6 +47,7 @@ const CONFIG_SOLICITUDES = {
     {
       nombre: 'PC no funciona bien',
       area: 'st',
+      grupo: 'Soporte técnico',
       avisoA: '',
       prioridad: 'Alto',
       textoLibre: false,
@@ -53,6 +56,7 @@ const CONFIG_SOLICITUDES = {
     {
       nombre: 'Proyector sin imagen / no conecta',
       area: 'st',
+      grupo: 'Soporte técnico',
       avisoA: '',
       prioridad: 'Alto',
       textoLibre: false,
@@ -61,6 +65,7 @@ const CONFIG_SOLICITUDES = {
     {
       nombre: 'Periférico roto',
       area: 'st',
+      grupo: 'Soporte técnico',
       avisoA: '',
       prioridad: 'Medio',
       textoLibre: false,
@@ -69,6 +74,7 @@ const CONFIG_SOLICITUDES = {
     {
       nombre: 'Impresora en red no imprime',
       area: 'st',
+      grupo: 'Redes y conectividad',
       avisoA: '',
       prioridad: 'Medio',
       textoLibre: false,
@@ -77,6 +83,7 @@ const CONFIG_SOLICITUDES = {
     {
       nombre: 'Software / consulta',
       area: 'st',
+      grupo: 'Soporte técnico',
       avisoA: '',
       prioridad: 'Bajo',
       textoLibre: false,
@@ -85,6 +92,7 @@ const CONFIG_SOLICITUDES = {
     {
       nombre: 'WiFi lento o sin señal',
       area: 'st',
+      grupo: 'Redes y conectividad',
       avisoA: '',
       prioridad: 'Alto',
       textoLibre: false,
@@ -93,6 +101,7 @@ const CONFIG_SOLICITUDES = {
     {
       nombre: 'Cuenta o acceso',
       area: 'st',
+      grupo: 'Redes y conectividad',
       avisoA: '',
       prioridad: 'Alto',
       textoLibre: false,
@@ -101,6 +110,7 @@ const CONFIG_SOLICITUDES = {
     {
       nombre: 'Punto de red nuevo / cableado',
       area: 'st',
+      grupo: 'Redes y conectividad',
       avisoA: 'mantenimiento',
       prioridad: 'Bajo',
       textoLibre: false,

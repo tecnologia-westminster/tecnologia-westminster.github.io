@@ -130,18 +130,6 @@
       line-height: 1.55;
     }
 
-    /* ALERTAS */
-    .alertas-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    @media (max-width: 580px) { .alertas-grid { grid-template-columns: 1fr; } }
-    .alerta-vacia {
-      font-size: 13px;
-      color: var(--w-gris);
-    }
-
     /* FORMULARIO */
     .form-seccion { margin-bottom: 28px; }
     .form-select,
@@ -352,8 +340,8 @@
           </button>
           <div class="herramientas-grid area__herramientas">
             <button class="herramienta" data-goto="infra-it" data-herramienta="solicitudes">
-              <strong>Solicitudes y alertas</strong>
-              <span>ST, mantenimiento, compras y estado del sistema</span>
+              <strong>Solicitudes</strong>
+              <span>ST, redes, mantenimiento y compras</span>
             </button>
             <button class="herramienta" data-goto="infra-it" data-herramienta="usuario-nuevo">
               <strong>Usuario nuevo</strong>
@@ -403,8 +391,8 @@
 
       <div class="herramientas-grid herramientas-selector">
         <button class="herramienta seleccionada" data-herramienta="solicitudes">
-          <strong>Solicitudes y alertas</strong>
-          <span>ST, mantenimiento, compras y estado del sistema</span>
+          <strong>Solicitudes</strong>
+          <span>ST, redes, mantenimiento y compras</span>
         </button>
         <button class="herramienta" data-herramienta="usuario-nuevo">
           <strong>Usuario nuevo</strong>
@@ -416,23 +404,8 @@
         </button>
       </div>
 
-    <!-- SOLICITUDES / ALERTAS -->
+    <!-- SOLICITUDES -->
     <div class="herramienta-panel activo" id="herr-solicitudes">
-
-      <div class="bloque">
-        <h2 class="w-titulo">Alertas</h2>
-        <p class="w-bajada">Estado del sistema y seguimiento de tus pedidos.</p>
-        <div class="alertas-grid">
-          <div class="w-recuadro">
-            <span class="w-rotulo">Sistema</span>
-            <p class="alerta-vacia">Sin alertas activas.</p>
-          </div>
-          <div class="w-recuadro">
-            <span class="w-rotulo">Mis solicitudes</span>
-            <p class="alerta-vacia">Sin solicitudes recientes.</p>
-          </div>
-        </div>
-      </div>
 
       <div class="bloque">
         <h2 class="w-titulo">Nueva solicitud</h2>
@@ -872,7 +845,7 @@
   <footer class="w-footer">
     <div class="w-footer__interior">
       <span><strong>Colegio Westminster</strong> · Peña 141, Banfield, Lomas de Zamora</span>
-      <span>Portal institucional — uso interno</span>
+      <span>Soporte: <a href="mailto:tecnologia@colegiowestminster.com.ar">tecnologia@colegiowestminster.com.ar</a> · Portal institucional — uso interno</span>
     </div>
   </footer>
 
@@ -979,21 +952,23 @@
       ocultarAviso();
     });
 
-    // Categorías agrupadas por área principal
+    // Categorías agrupadas por área principal y, si tienen, por grupo (IT: Soporte técnico · Redes y conectividad)
     Object.entries(CFG.areas).forEach(([clave, nombreArea]) => {
       const cats = CFG.categorias.filter(c => c.area === clave);
-      if (!cats.length) return;
-      const grupo = crearEl('div', 'grupo-categorias');
-      grupo.appendChild(crearEl('span', 'w-rotulo', nombreArea));
-      const grid = crearEl('div', 'categorias-grid');
-      cats.forEach(c => {
-        const b = crearEl('button', 'categoria-btn', c.nombre);
-        b.type = 'button';
-        b.addEventListener('click', () => elegirCategoria(c, b));
-        grid.appendChild(b);
+      const grupos = [...new Set(cats.map(c => c.grupo || ''))];
+      grupos.forEach(g => {
+        const grupo = crearEl('div', 'grupo-categorias');
+        grupo.appendChild(crearEl('span', 'w-rotulo', g ? nombreArea + ' · ' + g : nombreArea));
+        const grid = crearEl('div', 'categorias-grid');
+        cats.filter(c => (c.grupo || '') === g).forEach(c => {
+          const b = crearEl('button', 'categoria-btn', c.nombre);
+          b.type = 'button';
+          b.addEventListener('click', () => elegirCategoria(c, b));
+          grid.appendChild(b);
+        });
+        grupo.appendChild(grid);
+        contCategorias.appendChild(grupo);
       });
-      grupo.appendChild(grid);
-      contCategorias.appendChild(grupo);
     });
 
     function crearEl(tag, clase, texto) {
