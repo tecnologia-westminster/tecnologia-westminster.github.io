@@ -15,7 +15,7 @@ Portal institucional del Colegio Westminster. Documentación y decisiones en el 
 
 ## Archivos
 
-- `index.html` — portal: Inicio · Institucional · Solicitudes · Digital · Usuario nuevo · Planificación
+- `index.html` — portal: Inicio · Infraestructura / IT (Solicitudes · Usuario nuevo · Planificación) · Institucional · Alfabetización digital
 - `digital-hitos.js` — datos de los hitos 2026 (fuente: `hitos-it-2026.md` en el vault)
 - `westminster-identidad.css` — fuente única de identidad visual Westminster
 

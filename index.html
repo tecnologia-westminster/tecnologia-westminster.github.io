@@ -18,37 +18,23 @@
       .w-header, .w-footer { padding-left: 16px; padding-right: 16px; }
     }
 
-    /* TABS */
-    .tabs-nav {
-      display: flex;
-      gap: 4px;
-      overflow-x: auto;
-      border-bottom: 1px solid var(--w-arena-linea);
-      margin: 0 -4px 40px;
-      padding: 0 4px;
-      scrollbar-width: none;
-    }
-    .tabs-nav::-webkit-scrollbar { display: none; }
-    .tab-btn {
+    /* PANELES */
+    main { padding-top: 40px; }
+    .w-header__interior { cursor: pointer; }
+    .volver {
+      display: inline-block;
+      margin-bottom: 24px;
+      padding: 0;
       background: none;
       border: none;
-      border-bottom: 2px solid transparent;
-      margin-bottom: -1px;
-      padding: 18px 14px 14px;
       font-family: 'Montserrat', sans-serif;
-      font-size: 13px;
-      font-weight: 400;
+      font-size: 12px;
       color: var(--w-gris);
+      text-decoration: underline;
+      text-underline-offset: 3px;
       cursor: pointer;
-      white-space: nowrap;
-      transition: color 0.15s ease, border-color 0.15s ease;
     }
-    .tab-btn:hover { color: var(--w-cuerpo); }
-    .tab-btn.activo {
-      color: var(--w-azul);
-      font-weight: 500;
-      border-bottom-color: var(--w-azul);
-    }
+    .volver:hover { color: var(--w-azul-profundo); }
     .tab-panel { display: none; }
     .tab-panel.activo { display: block; }
 
@@ -56,33 +42,52 @@
     .bloque { margin-bottom: 48px; }
 
     /* ÁREAS */
-    .areas-lista {
+    .areas-lista { display: grid; gap: 12px; }
+    .area-btn {
       display: flex;
-      flex-wrap: wrap;
-      border: 1px solid var(--w-arena-linea);
-      border-radius: 4px;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+      padding: 18px 20px 16px;
+      text-align: left;
+      font-family: 'Montserrat', sans-serif;
       background: #fff;
+      border: 1px solid var(--w-arena);
+      border-bottom: 3px solid var(--w-azul);
+      border-radius: 3px;
+      cursor: pointer;
+      transition: border-color 0.15s ease;
     }
-    .area {
-      flex: 1 1 180px;
-      padding: 16px 20px;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--w-cuerpo);
-      border-right: 1px solid var(--w-arena-linea);
+    .area-btn:hover { border-color: var(--w-gris); border-bottom-color: var(--w-azul); }
+    .area.abierta .area-btn,
+    .area.abierta .area-btn:hover {
+      border-color: var(--w-rojo-op);
+      border-bottom-color: var(--w-rojo-op);
     }
-    .area:last-child { border-right: none; }
-    .area span {
+    .area-btn strong {
       display: block;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--w-azul-profundo);
+      margin-bottom: 4px;
+    }
+    .area-btn span {
       font-size: 12px;
-      font-weight: 400;
+      color: var(--w-cuerpo);
+      line-height: 1.55;
+    }
+    .area-btn .area__signo {
+      flex: none;
+      font-size: 20px;
+      font-weight: 300;
       color: var(--w-gris);
-      margin-top: 2px;
     }
-    @media (max-width: 580px) {
-      .area { border-right: none; border-bottom: 1px solid var(--w-arena-linea); }
-      .area:last-child { border-bottom: none; }
+    .area .area__herramientas {
+      display: none;
+      padding: 12px 0 8px 20px;
     }
+    .area.abierta .area__herramientas { display: grid; }
 
     /* HERRAMIENTAS */
     .herramientas-grid {
@@ -93,29 +98,35 @@
     .herramienta {
       display: block;
       width: 100%;
-      padding: 20px 22px;
+      padding: 18px 20px 16px;
       text-align: left;
       font-family: 'Montserrat', sans-serif;
       background: #fff;
-      border: 1px solid var(--w-arena-linea);
-      border-radius: 4px;
+      border: 1px solid var(--w-arena);
+      border-bottom: 3px solid var(--w-azul);
+      border-radius: 3px;
       cursor: pointer;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      transition: border-color 0.15s ease;
     }
-    .herramienta:hover {
-      border-color: var(--w-arena);
-      box-shadow: 0 2px 10px rgba(0, 38, 58, 0.06);
+    .herramienta:hover { border-color: var(--w-gris); border-bottom-color: var(--w-azul); }
+    .herramienta.seleccionada,
+    .herramienta.seleccionada:hover {
+      border-color: var(--w-rojo-op);
+      border-bottom-color: var(--w-rojo-op);
     }
+    .herramientas-selector { margin-bottom: 40px; }
+    .herramienta-panel { display: none; }
+    .herramienta-panel.activo { display: block; }
     .herramienta strong {
       display: block;
       font-size: 14px;
-      font-weight: 500;
-      color: var(--w-azul);
+      font-weight: 600;
+      color: var(--w-azul-profundo);
       margin-bottom: 4px;
     }
     .herramienta span {
       font-size: 12px;
-      color: var(--w-gris);
+      color: var(--w-cuerpo);
       line-height: 1.55;
     }
 
@@ -310,7 +321,7 @@
 <body>
 
   <header class="w-header">
-    <div class="w-header__interior">
+    <div class="w-header__interior" data-goto="inicio">
       <h1 class="w-header__titulo">Colegio Westminster</h1>
       <p class="w-header__subtitulo">Portal Institucional</p>
     </div>
@@ -318,60 +329,87 @@
 
   <main>
 
-    <nav class="tabs-nav">
-      <button class="tab-btn activo" data-tab="inicio">Inicio</button>
-      <button class="tab-btn" data-tab="institucional">Institucional</button>
-      <button class="tab-btn" data-tab="solicitudes">Solicitudes</button>
-      <button class="tab-btn" data-tab="digital">Digital</button>
-      <button class="tab-btn" data-tab="usuario-nuevo">Usuario nuevo</button>
-      <button class="tab-btn" data-tab="planificacion">Planificación</button>
-    </nav>
 
     <!-- INICIO -->
     <section class="tab-panel activo" id="tab-inicio">
 
       <div class="bloque">
         <h2 class="w-titulo">Áreas</h2>
-        <p class="w-bajada">El portal reúne cuatro áreas del Colegio Westminster.</p>
+        <p class="w-bajada">Elegí un área para ver sus herramientas.</p>
         <div class="areas-lista">
-          <div class="area">Institucional<span>Manual de identidad y comunicación</span></div>
-          <div class="area">Infraestructura<span>Mantenimiento edilicio</span></div>
-          <div class="area">IT<span>Soporte técnico, redes y conectividad</span></div>
-          <div class="area">Digital<span>Proyecto educativo e hitos</span></div>
+        <div class="area">
+          <button class="area-btn" aria-expanded="false">
+            <span class="area__texto"><strong>Infraestructura / IT</strong><span>Mantenimiento edilicio, soporte técnico, redes y conectividad</span></span>
+            <span class="area__signo">+</span>
+          </button>
+          <div class="herramientas-grid area__herramientas">
+            <button class="herramienta" data-goto="infra-it" data-herramienta="solicitudes">
+              <strong>Solicitudes y alertas</strong>
+              <span>ST, mantenimiento, compras y estado del sistema</span>
+            </button>
+            <button class="herramienta" data-goto="infra-it" data-herramienta="usuario-nuevo">
+              <strong>Usuario nuevo</strong>
+              <span>Alta de personal y gestión de accesos institucionales</span>
+            </button>
+            <button class="herramienta" data-goto="infra-it" data-herramienta="planificacion">
+              <strong>Planificación de clase o evento</strong>
+              <span>Reserva de espacios y agendamiento institucional</span>
+            </button>
+          </div>
         </div>
-      </div>
-
-      <div class="bloque">
-        <h2 class="w-titulo">Herramientas</h2>
-        <p class="w-bajada">Elegí la herramienta que necesitás.</p>
-        <div class="herramientas-grid">
-          <button class="herramienta" data-goto="usuario-nuevo">
-            <strong>Usuario nuevo</strong>
-            <span>Alta de personal y gestión de accesos institucionales</span>
+        <div class="area">
+          <button class="area-btn" aria-expanded="false">
+            <span class="area__texto"><strong>Institucional</strong><span>Manual de identidad y comunicación</span></span>
+            <span class="area__signo">+</span>
           </button>
-          <button class="herramienta" data-goto="planificacion">
-            <strong>Planificación de clase o evento</strong>
-            <span>Reserva de espacios y agendamiento institucional</span>
+          <div class="herramientas-grid area__herramientas">
+            <button class="herramienta" data-goto="institucional">
+              <strong>Manual de identidad</strong>
+              <span>Colores, tipografía y estilo de comunicación institucional</span>
+            </button>
+          </div>
+        </div>
+        <div class="area">
+          <button class="area-btn" aria-expanded="false">
+            <span class="area__texto"><strong>Alfabetización digital</strong><span>Proyecto educativo e hitos</span></span>
+            <span class="area__signo">+</span>
           </button>
-          <button class="herramienta" data-goto="solicitudes">
-            <strong>Solicitudes y alertas</strong>
-            <span>ST, mantenimiento, compras y estado del sistema</span>
-          </button>
-          <button class="herramienta" data-goto="institucional">
-            <strong>Manual de identidad</strong>
-            <span>Colores, tipografía y estilo de comunicación institucional</span>
-          </button>
-          <button class="herramienta" data-goto="digital">
-            <strong>Proyecto Educativo Digital</strong>
-            <span>Fundamentación, objetivos por nivel e hitos 2026</span>
-          </button>
+          <div class="herramientas-grid area__herramientas">
+            <button class="herramienta" data-goto="digital">
+              <strong>Proyecto Educativo Digital</strong>
+              <span>Fundamentación, objetivos por nivel e hitos 2026</span>
+            </button>
+          </div>
+        </div>
         </div>
       </div>
 
     </section>
 
+    <!-- INFRAESTRUCTURA / IT -->
+    <section class="tab-panel" id="tab-infra-it">
+      <button class="volver" data-goto="inicio">Volver al inicio</button>
+
+      <h2 class="w-titulo">Infraestructura / IT</h2>
+      <p class="w-bajada">Mantenimiento edilicio, soporte técnico, redes y conectividad.</p>
+
+      <div class="herramientas-grid herramientas-selector">
+        <button class="herramienta seleccionada" data-herramienta="solicitudes">
+          <strong>Solicitudes y alertas</strong>
+          <span>ST, mantenimiento, compras y estado del sistema</span>
+        </button>
+        <button class="herramienta" data-herramienta="usuario-nuevo">
+          <strong>Usuario nuevo</strong>
+          <span>Alta de personal y gestión de accesos institucionales</span>
+        </button>
+        <button class="herramienta" data-herramienta="planificacion">
+          <strong>Planificación de clase o evento</strong>
+          <span>Reserva de espacios y agendamiento institucional</span>
+        </button>
+      </div>
+
     <!-- SOLICITUDES / ALERTAS -->
-    <section class="tab-panel" id="tab-solicitudes">
+    <div class="herramienta-panel activo" id="herr-solicitudes">
 
       <div class="bloque">
         <h2 class="w-titulo">Alertas</h2>
@@ -463,24 +501,27 @@
 
       </div>
 
-    </section>
+    </div>
 
     <!-- USUARIO NUEVO -->
-    <section class="tab-panel" id="tab-usuario-nuevo">
+    <div class="herramienta-panel" id="herr-usuario-nuevo">
       <h2 class="w-titulo">Usuario nuevo</h2>
       <p class="w-bajada">Alta de personal y gestión de accesos institucionales.</p>
       <div class="w-recuadro w-recuadro--suave proximamente">Próximamente disponible.</div>
-    </section>
+    </div>
 
     <!-- PLANIFICACIÓN -->
-    <section class="tab-panel" id="tab-planificacion">
+    <div class="herramienta-panel" id="herr-planificacion">
       <h2 class="w-titulo">Planificación de clase o evento</h2>
       <p class="w-bajada">Reserva de espacios y agendamiento institucional con Google Calendar.</p>
       <div class="w-recuadro w-recuadro--suave proximamente">Próximamente disponible.</div>
+    </div>
+
     </section>
 
     <!-- INSTITUCIONAL -->
     <section class="tab-panel" id="tab-institucional">
+      <button class="volver" data-goto="inicio">Volver al inicio</button>
       <h2 class="w-titulo">Manual de identidad</h2>
       <p class="w-bajada">Criterios visuales y de comunicación para todas las piezas del Colegio Westminster.</p>
 
@@ -636,6 +677,7 @@
 
     <!-- DIGITAL -->
     <section class="tab-panel" id="tab-digital">
+      <button class="volver" data-goto="inicio">Volver al inicio</button>
       <h2 class="w-titulo">Proyecto Educativo Tecnológico Digital</h2>
       <p class="w-bajada">Fundamentación, objetivos por nivel e hitos 2026 del Departamento de Tecnología.</p>
 
@@ -844,20 +886,43 @@
   <script src="digital-hitos.js"></script>
   <script>
     // TABS
-    const tabBtns = document.querySelectorAll('.tab-btn');
     const tabPanels = document.querySelectorAll('.tab-panel');
 
     function activarTab(nombre) {
-      tabBtns.forEach(b => b.classList.toggle('activo', b.dataset.tab === nombre));
       tabPanels.forEach(p => p.classList.toggle('activo', p.id === 'tab-' + nombre));
     }
 
-    tabBtns.forEach(btn => btn.addEventListener('click', () => activarTab(btn.dataset.tab)));
+    // ÁREAS — Inicio: cada área despliega sus herramientas
+    document.querySelectorAll('.area-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const area = btn.closest('.area');
+        const abrir = !area.classList.contains('abierta');
+        document.querySelectorAll('.area').forEach(a => {
+          const esta = a === area && abrir;
+          a.classList.toggle('abierta', esta);
+          a.querySelector('.area-btn').setAttribute('aria-expanded', esta);
+          a.querySelector('.area__signo').textContent = esta ? '\u2212' : '+';
+        });
+      });
+    });
+
+    // HERRAMIENTAS — Infraestructura / IT
+    const selectorHerr = document.querySelectorAll('.herramientas-selector .herramienta');
+    const panelesHerr = document.querySelectorAll('.herramienta-panel');
+
+    function activarHerramienta(nombre) {
+      selectorHerr.forEach(b => b.classList.toggle('seleccionada', b.dataset.herramienta === nombre));
+      panelesHerr.forEach(p => p.classList.toggle('activo', p.id === 'herr-' + nombre));
+    }
+
+    selectorHerr.forEach(btn => btn.addEventListener('click', () => activarHerramienta(btn.dataset.herramienta)));
 
     document.querySelectorAll('[data-goto]').forEach(el => {
       el.addEventListener('click', e => {
         e.preventDefault();
         activarTab(el.dataset.goto);
+        if (el.dataset.herramienta) activarHerramienta(el.dataset.herramienta);
+        window.scrollTo(0, 0);
       });
     });
 

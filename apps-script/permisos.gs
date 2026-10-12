@@ -134,6 +134,8 @@ function puedeGestionar_(perfil, area, nivel) {
 
 /**
  * Responsables de un área y nivel. Lo usa el alta de solicitudes para decidir a quién avisar.
+ * Las filas admin también se filtran por área y nivel: así una fila admin · st · Notificar SÍ
+ * avisa solo las solicitudes de IT, y la fila admin · todas · Notificar NO no avisa nada.
  * Devuelve [{ email, nombre, notificar }]
  */
 function responsablesDe_(area, nivel) {
@@ -142,10 +144,9 @@ function responsablesDe_(area, nivel) {
   return filasActivas_(abrirPlanilla_(), RESP)
     .filter(f => {
       const rol = normalizar_(f[RESP.rol]);
-      if (rol === 'admin') return true;
       const fa = normalizar_(f[RESP.area]);
       const fn = normalizar_(f[RESP.nivel]);
-      return rol === 'editor' && (fa === a || fa === 'todas') && (fn === n || fn === 'todos');
+      return (rol === 'editor' || rol === 'admin') && (fa === a || fa === 'todas') && (fn === n || fn === 'todos');
     })
     .map(f => ({
       email: normalizar_(f[RESP.email]),
@@ -187,7 +188,8 @@ function responder_(obj) {
 /** Prueba manual desde el editor: autoriza Sheets y Groups y muestra el resultado en el registro. */
 function probar() {
   Logger.log(obtenerPerfil_('nicolas.trotvil@' + DOMINIO));
-  Logger.log(obtenerPerfil_('alejo@' + DOMINIO));
+  Logger.log(obtenerPerfil_('mantenimiento@' + DOMINIO));
   Logger.log(obtenerPerfil_('alumno.prueba@' + DOMINIO));
-  Logger.log(responsablesDe_('mantenimiento', 'Primaria'));
+  Logger.log(responsablesDe_('mantenimiento', 'Primario'));
+  Logger.log(responsablesDe_('st', 'Secundario'));
 }
