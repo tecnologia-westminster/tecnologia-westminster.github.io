@@ -9,7 +9,7 @@
  *
  * Despliegue (cuenta tecnologia@colegiowestminster.com.ar):
  *   1. Configuración del proyecto → Propiedades de la secuencia de comandos:
- *        PERMISOS_SHEET_ID = ID de la planilla permisos-portal-westminster
+ *        PERMISOS_SHEET_ID = ID de la planilla principal portal-westminster
  *        CLIENT_ID         = OAuth Client ID del portal (Google Cloud)
  *   2. Implementar → Nueva implementación → Aplicación web
  *        Ejecutar como: Yo (tecnologia@)
