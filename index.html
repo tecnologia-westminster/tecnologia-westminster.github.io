@@ -489,7 +489,7 @@
         </div>
 
         <div class="w-recuadro w-recuadro--suave confirmacion" id="confirmacion">
-          <p><strong>Solicitud registrada.</strong></p>
+          <p><strong id="conf-titulo">Solicitud registrada.</strong></p>
           <p id="conf-texto"></p>
           <p id="conf-lugar"></p>
           <p class="ruta-info" id="conf-ruta"></p>
@@ -950,6 +950,7 @@
       sesion = nueva;
       try { sessionStorage.setItem(CLAVE_SESION, JSON.stringify(sesion)); } catch (e) {}
       mostrarSesion();
+      cargarConfiguracion();
     }
 
     function mostrarSesion() {
@@ -1028,8 +1029,10 @@
       });
     });
 
-    // SOLICITUDES — formulario armado desde CONFIG_SOLICITUDES (solicitudes-config.js)
-    const CFG = CONFIG_SOLICITUDES;
+    // SOLICITUDES — formulario armado desde la planilla (acción configuracion del Apps Script).
+    // Sin Apps Script, o si la llamada falla, usa la copia de solicitudes-config.js.
+    let CFG = CONFIG_SOLICITUDES;
+    let configuracionCargada = false;
     const OTRO_ESPACIO = 'Otro espacio';
     const OTRO_PROBLEMA = 'Otro problema';
 
@@ -1057,8 +1060,30 @@
 
     function ocultarAviso() { aviso.style.display = 'none'; }
 
+    // Arma niveles y categorías desde CFG; se vuelve a llamar si llega la configuración del servidor
+    function armarFormulario() {
+      selNivel.replaceChildren(opcion('Seleccioná el nivel', ''));
+      CFG.niveles.forEach(n => selNivel.appendChild(opcion(n)));
+      contCategorias.replaceChildren();
+      armarCategorias();
+      limpiarFormulario();
+    }
+
+    // Una vez por página: así un nuevo ingreso (sesión vencida) no borra lo que ya se cargó
+    async function cargarConfiguracion() {
+      if (configuracionCargada || !PORTAL_CONFIG.APPS_SCRIPT_URL || !sesion) return;
+      configuracionCargada = true;
+      try {
+        const r = await llamarServidor('configuracion', {}, sesion.idToken);
+        if (!r.ok) throw new Error(r.error);
+        CFG = r.configuracion;
+        armarFormulario();
+      } catch (err) {
+        console.warn('Configuración del servidor no disponible; se usa la copia local.', err);
+      }
+    }
+
     // Nivel → aulas y espacios del nivel
-    CFG.niveles.forEach(n => selNivel.appendChild(opcion(n)));
 
     selNivel.addEventListener('change', () => {
       selAula.replaceChildren();
@@ -1088,6 +1113,7 @@
     });
 
     // Categorías agrupadas por área principal y, si tienen, por grupo (IT: Soporte técnico · Redes y conectividad)
+    function armarCategorias() {
     Object.entries(CFG.areas).forEach(([clave, nombreArea]) => {
       const cats = CFG.categorias.filter(c => c.area === clave);
       const grupos = [...new Set(cats.map(c => c.grupo || ''))];
@@ -1105,6 +1131,7 @@
         contCategorias.appendChild(grupo);
       });
     });
+    }
 
     function crearEl(tag, clase, texto) {
       const el = document.createElement(tag);
@@ -1163,31 +1190,78 @@
       return null;
     }
 
-    document.getElementById('btn-enviar').addEventListener('click', () => {
+    function mostrarAvisoForm(texto) {
+      aviso.textContent = texto;
+      aviso.style.display = 'block';
+    }
+
+    function mensajeError(codigo) {
+      if (codigo === 'token_invalido' || codigo === 'sin_token') return 'Tu sesión venció. Volvé a ingresar: lo que cargaste se mantiene.';
+      if (codigo === 'sin_acceso') return 'Tu cuenta no tiene acceso al portal. Si lo necesitás, escribí a tecnologia@' + PORTAL_CONFIG.DOMINIO + '.';
+      if (String(codigo).indexOf('dato_invalido') === 0) return 'Alguna opción ya no está vigente. Recargá la página y volvé a cargar la solicitud.';
+      return 'No se pudo enviar la solicitud. Probá de nuevo; si sigue fallando, escribí a tecnologia@' + PORTAL_CONFIG.DOMINIO + '.';
+    }
+
+    // El aviso va en el recuadro de ingreso, porque el formulario queda oculto hasta volver a entrar
+    function sesionVencida() {
+      cerrarSesion();
+      avisoIngreso.textContent = mensajeError('token_invalido');
+      avisoIngreso.style.display = 'block';
+    }
+
+    const btnEnviar = document.getElementById('btn-enviar');
+
+    btnEnviar.addEventListener('click', async () => {
       const falta = faltante();
       if (falta) {
-        aviso.textContent = falta[1];
-        aviso.style.display = 'block';
+        mostrarAvisoForm(falta[1]);
         falta[0].scrollIntoView({ block: 'center', behavior: 'smooth' });
         if (falta[0].focus) falta[0].focus({ preventScroll: true });
         return;
       }
 
       const c = categoriaActual;
-      const lugar = selAula.value === OTRO_ESPACIO ? txtOtroEspacio.value.trim() : selAula.value;
+      const otroEspacio = selAula.value === OTRO_ESPACIO;
+      const lugar = otroEspacio ? txtOtroEspacio.value.trim() : selAula.value;
+      let id = '';
+
+      if (PORTAL_CONFIG.APPS_SCRIPT_URL) {
+        if (!sesion || sesion.exp < Date.now() + 60000) return sesionVencida();
+        btnEnviar.disabled = true;
+        btnEnviar.textContent = 'Enviando…';
+        try {
+          const r = await llamarServidor('crearSolicitud', {
+            solicitud: {
+              nivel: selNivel.value, lugar: lugar, otroEspacio: otroEspacio, categoria: c.nombre,
+              descripcion: descripcionActual || '', detalle: txtDetalle.value.trim()
+            }
+          }, sesion.idToken);
+          if (!r.ok) throw new Error(r.error);
+          id = r.id;
+        } catch (err) {
+          if (err.message === 'token_invalido') return sesionVencida();
+          mostrarAvisoForm(mensajeError(err.message));
+          return;
+        } finally {
+          btnEnviar.disabled = false;
+          btnEnviar.textContent = 'Enviar solicitud';
+        }
+      }
+
       const ruta = ['Área: ' + CFG.areas[c.area]];
       if (c.avisoA) ruta.push('Aviso a: ' + CFG.areas[c.avisoA]);
       ruta.push('Prioridad: ' + c.prioridad);
 
       document.getElementById('form-solicitud').style.display = 'none';
       document.getElementById('confirmacion').style.display = 'block';
+      document.getElementById('conf-titulo').textContent = id ? `Solicitud ${id} registrada.` : 'Solicitud registrada.';
       document.getElementById('conf-texto').textContent =
         descripcionActual ? `${c.nombre} — ${descripcionActual}.` : `${c.nombre}.`;
       document.getElementById('conf-lugar').textContent = `${selNivel.value} · ${lugar}`;
       document.getElementById('conf-ruta').textContent = ruta.join(' · ');
     });
 
-    document.getElementById('btn-nueva').addEventListener('click', () => {
+    function limpiarFormulario() {
       document.getElementById('form-solicitud').style.display = 'block';
       document.getElementById('confirmacion').style.display = 'none';
       selNivel.value = '';
@@ -1201,7 +1275,12 @@
       categoriaActual = null;
       descripcionActual = null;
       ocultarAviso();
-    });
+    }
+
+    document.getElementById('btn-nueva').addEventListener('click', limpiarFormulario);
+
+    armarFormulario();
+    cargarConfiguracion();   // sesión recuperada al recargar la página
 
     // SUBTABS — Institucional y Digital
     document.querySelectorAll('.subtabs-nav[data-grupo]').forEach(nav => {

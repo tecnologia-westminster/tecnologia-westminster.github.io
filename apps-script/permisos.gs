@@ -16,6 +16,9 @@
  *        Quién tiene acceso: Cualquier usuario
  *      El acceso real lo controlan verificarToken_() y obtenerPerfil_().
  *   3. Ejecutar probar() una vez desde el editor para autorizar Sheets y Groups.
+ *   4. Solicitudes: ver solicitudes.gs (propiedad SOLICITUDES_SHEET_ID y prepararPlanillaSolicitudes()).
+ *
+ * Acciones: perfil (este archivo) · configuracion y crearSolicitud (solicitudes.gs).
  *
  * Llamada desde el portal (POST, Content-Type text/plain para evitar preflight CORS):
  *   { "accion": "perfil", "idToken": "<ID token de Google Sign-In>" }
@@ -35,8 +38,19 @@ function doPost(e) {
     const body = JSON.parse(e.postData.contents);
     const usuario = verificarToken_(body.idToken);
 
+    const perfil = obtenerPerfil_(usuario.email);
+
     if (body.accion === 'perfil') {
-      return responder_(Object.assign({ ok: true }, usuario, obtenerPerfil_(usuario.email)));
+      return responder_(Object.assign({ ok: true }, usuario, perfil));
+    }
+    // Las demás acciones exigen figurar en Acceso o Responsables
+    if (!perfil.acceso) return responder_({ ok: false, error: 'sin_acceso' });
+
+    if (body.accion === 'configuracion') {
+      return responder_({ ok: true, configuracion: configuracion_() });
+    }
+    if (body.accion === 'crearSolicitud') {
+      return responder_(Object.assign({ ok: true }, crearSolicitud_(usuario, body.solicitud)));
     }
     return responder_({ ok: false, error: 'accion_desconocida' });
   } catch (err) {

@@ -18,6 +18,7 @@ Portal institucional del Colegio Westminster. Documentación y decisiones en el 
 - `index.html` — portal: Inicio · Infraestructura / IT (Solicitudes · Usuario nuevo · Planificación) · Institucional · Alfabetización digital
 - `portal-config.js` — Client ID de Google (OAuth "Portal web", proyecto credencial-westminster) y URL del Apps Script (vacía hasta el despliegue)
 - `solicitudes-config.js` — niveles, aulas, categorías y descripciones del formulario (copia de la planilla principal; actualizar al cambiar la planilla hasta que el Apps Script la lea)
+- `apps-script/permisos.gs` — doPost, token y permisos (Acceso + Responsables); `apps-script/solicitudes.gs` — acciones configuracion y crearSolicitud; `apps-script/pruebas.js` — pruebas con Google simulado (`node apps-script/pruebas.js .`)
 - `digital-hitos.js` — datos de los hitos 2026 (fuente: `hitos-it-2026.md` en el vault)
 - `westminster-identidad.css` — fuente única de identidad visual Westminster
 
