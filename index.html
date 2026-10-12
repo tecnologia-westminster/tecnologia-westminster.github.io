@@ -206,6 +206,105 @@
       font-size: 13px;
       color: var(--w-gris);
     }
+
+    /* SUBTABS (dentro de un área) */
+    .subtabs-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 28px;
+    }
+    .subtab-btn {
+      padding: 7px 14px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--w-cuerpo);
+      background: #fff;
+      border: 1px solid var(--w-arena-linea);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .subtab-btn:hover { border-color: var(--w-arena); }
+    .subtab-btn.activo {
+      border-color: var(--w-azul-profundo);
+      background: var(--w-arena-suave);
+      font-weight: 500;
+    }
+    .subtabs-nav--compacto { margin-bottom: 16px; }
+    .subtabs-nav--separado {
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--w-arena-linea);
+    }
+    .subpanel { display: none; }
+    .subpanel.activo { display: block; }
+
+    /* TEXTO DE CONTENIDO */
+    .contenido h3 {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--w-azul);
+      margin: 28px 0 10px;
+    }
+    .contenido h3:first-child { margin-top: 0; }
+    .contenido p { font-size: 14px; margin-bottom: 10px; }
+    .contenido ul { font-size: 14px; margin: 0 0 12px 18px; }
+    .contenido li { margin-bottom: 4px; }
+    .contenido .cita {
+      font-size: 14px;
+      border-left: 2px solid var(--w-arena);
+      padding: 4px 0 4px 14px;
+      margin: 12px 0;
+    }
+
+    /* TABLAS */
+    .tabla-scroll { overflow-x: auto; margin-bottom: 16px; }
+    .w-tabla {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      background: #fff;
+      border: 1px solid var(--w-arena-linea);
+    }
+    .w-tabla th {
+      text-align: left;
+      font-weight: 500;
+      color: var(--w-cuerpo);
+      background: var(--w-arena-suave);
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--w-arena-linea);
+    }
+    .w-tabla td {
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--w-arena-linea);
+      vertical-align: top;
+    }
+    .w-tabla tr:last-child td { border-bottom: none; }
+    .w-tabla td ul { margin: 0 0 0 16px; }
+    .w-tabla td li { margin-bottom: 2px; }
+    .w-tabla .col-periodo { width: 22%; white-space: nowrap; color: var(--w-gris); }
+    @media (max-width: 580px) {
+      .w-tabla { font-size: 12px; }
+      .w-tabla th, .w-tabla td { padding: 8px; }
+      .w-tabla .col-periodo { white-space: normal; }
+    }
+
+    .muestra {
+      display: inline-block;
+      width: 28px;
+      height: 18px;
+      border-radius: 2px;
+      border: 1px solid var(--w-arena-linea);
+      vertical-align: middle;
+    }
+    code { font-family: ui-monospace, Menlo, monospace; font-size: 12px; }
+
+    .fuente-nota {
+      font-size: 12px;
+      color: var(--w-gris);
+      margin-top: 24px;
+    }
   </style>
 </head>
 <body>
@@ -221,10 +320,11 @@
 
     <nav class="tabs-nav">
       <button class="tab-btn activo" data-tab="inicio">Inicio</button>
+      <button class="tab-btn" data-tab="institucional">Institucional</button>
       <button class="tab-btn" data-tab="solicitudes">Solicitudes</button>
+      <button class="tab-btn" data-tab="digital">Digital</button>
       <button class="tab-btn" data-tab="usuario-nuevo">Usuario nuevo</button>
       <button class="tab-btn" data-tab="planificacion">Planificación</button>
-      <button class="tab-btn" data-tab="identidad">Identidad</button>
     </nav>
 
     <!-- INICIO -->
@@ -232,11 +332,12 @@
 
       <div class="bloque">
         <h2 class="w-titulo">Áreas</h2>
-        <p class="w-bajada">Este portal da soporte operativo a tres áreas del Colegio Westminster.</p>
+        <p class="w-bajada">El portal reúne cuatro áreas del Colegio Westminster.</p>
         <div class="areas-lista">
-          <div class="area">Institucional<span>Gestión y comunicación</span></div>
-          <div class="area">ST<span>Soporte técnico</span></div>
-          <div class="area">Alfabetización Digital<span>Acompañamiento pedagógico</span></div>
+          <div class="area">Institucional<span>Manual de identidad y comunicación</span></div>
+          <div class="area">Infraestructura<span>Mantenimiento edilicio</span></div>
+          <div class="area">IT<span>Soporte técnico, redes y conectividad</span></div>
+          <div class="area">Digital<span>Proyecto educativo e hitos</span></div>
         </div>
       </div>
 
@@ -256,9 +357,13 @@
             <strong>Solicitudes y alertas</strong>
             <span>ST, mantenimiento, compras y estado del sistema</span>
           </button>
-          <button class="herramienta" data-goto="identidad">
-            <strong>Manual de identidad visual</strong>
-            <span>Colores, tipografía y componentes institucionales</span>
+          <button class="herramienta" data-goto="institucional">
+            <strong>Manual de identidad</strong>
+            <span>Colores, tipografía y estilo de comunicación institucional</span>
+          </button>
+          <button class="herramienta" data-goto="digital">
+            <strong>Proyecto Educativo Digital</strong>
+            <span>Fundamentación, objetivos por nivel e hitos 2026</span>
           </button>
         </div>
       </div>
@@ -374,11 +479,357 @@
       <div class="w-recuadro w-recuadro--suave proximamente">Próximamente disponible.</div>
     </section>
 
-    <!-- IDENTIDAD VISUAL -->
-    <section class="tab-panel" id="tab-identidad">
-      <h2 class="w-titulo">Manual de identidad visual</h2>
-      <p class="w-bajada">Colores, tipografía y componentes institucionales.</p>
-      <div class="w-recuadro w-recuadro--suave proximamente">Próximamente disponible.</div>
+    <!-- INSTITUCIONAL -->
+    <section class="tab-panel" id="tab-institucional">
+      <h2 class="w-titulo">Manual de identidad</h2>
+      <p class="w-bajada">Criterios visuales y de comunicación para todas las piezas del Colegio Westminster.</p>
+
+      <div class="subtabs-nav" data-grupo="inst">
+        <button class="subtab-btn activo" data-sub="inst-colores">Colores</button>
+        <button class="subtab-btn" data-sub="inst-tipografia">Tipografía y pie</button>
+        <button class="subtab-btn" data-sub="inst-comunicacion">Comunicación</button>
+        <button class="subtab-btn" data-sub="inst-tono">Tono por destinatario</button>
+      </div>
+
+      <div class="subpanel activo contenido" id="inst-colores">
+        <h3>Colores institucionales</h3>
+        <div class="tabla-scroll">
+          <table class="w-tabla">
+            <thead><tr><th></th><th>Nombre</th><th>Código</th><th>Uso</th></tr></thead>
+            <tbody>
+              <tr><td><span class="muestra" style="background:#236192"></span></td><td>Azul Institucional</td><td><code>#236192</code></td><td>Color principal. Encabezados y franja del pie</td></tr>
+              <tr><td><span class="muestra" style="background:#B3202A"></span></td><td>Rojo Institucional</td><td><code>#B3202A</code></td><td>Color secundario. Línea inferior del pie</td></tr>
+              <tr><td><span class="muestra" style="background:#00263A"></span></td><td>Azul Profundo</td><td><code>#00263A</code></td><td>Fondos oscuros y usos especiales</td></tr>
+              <tr><td><span class="muestra" style="background:#75787B"></span></td><td>Gris Institucional</td><td><code>#75787B</code></td><td>Texto secundario y cierres</td></tr>
+              <tr><td><span class="muestra" style="background:#E3D6C8"></span></td><td>Arena Institucional</td><td><code>#E3D6C8</code></td><td>Fondos suaves y fondos de tabla</td></tr>
+              <tr><td><span class="muestra" style="background:#C8102E"></span></td><td>Rojo Operativo</td><td><code>#C8102E</code></td><td>Señalización y alertas operativas</td></tr>
+              <tr><td><span class="muestra" style="background:#4A4A4A"></span></td><td>Texto cuerpo</td><td><code>#4A4A4A</code></td><td>Cuerpo de texto. Nunca negro puro</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Reglas de uso</h3>
+        <ul>
+          <li>No usar rojo sobre azul ni azul sobre rojo.</li>
+          <li>Máximo dos colores dominantes por pieza.</li>
+          <li>Texto de cuerpo en <code>#4A4A4A</code>, nunca negro puro.</li>
+          <li>Texto de cierre o secundario en Gris Institucional.</li>
+          <li>El Azul Institucional se reserva para encabezados.</li>
+        </ul>
+      </div>
+
+      <div class="subpanel contenido" id="inst-tipografia">
+        <h3>Tipografía</h3>
+        <div class="tabla-scroll">
+          <table class="w-tabla">
+            <thead><tr><th>Entorno</th><th>Fuente</th></tr></thead>
+            <tbody>
+              <tr><td>Fuente oficial</td><td>Neo Sans STD / Sanford</td></tr>
+              <tr><td>Google Docs y web</td><td>Montserrat</td></tr>
+              <tr><td>Microsoft Word</td><td>Calibri / Aptos</td></tr>
+              <tr><td>Gmail</td><td>Sans Serif predeterminada</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Pie institucional</h3>
+        <p>Se aplica en documentos y comunicaciones oficiales.</p>
+        <div class="tabla-scroll">
+          <table class="w-tabla">
+            <thead><tr><th>Elemento</th><th>Valor</th></tr></thead>
+            <tbody>
+              <tr><td>Franja principal</td><td>Azul Institucional <code>#236192</code></td></tr>
+              <tr><td>Línea inferior</td><td>Rojo Institucional <code>#B3202A</code></td></tr>
+              <tr><td>Logo y texto</td><td>Blanco</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Nombre oficial</h3>
+        <p>Siempre <strong>Colegio Westminster</strong>, con mayúsculas iniciales. No usar "westminster", "Westminster College" ni "el colegio" en contextos formales.</p>
+      </div>
+
+      <div class="subpanel contenido" id="inst-comunicacion">
+        <h3>Reglas para toda comunicación</h3>
+        <ul>
+          <li>Español rioplatense, sin anglicismos innecesarios.</li>
+          <li>Redacción clara y directa, sin relleno.</li>
+          <li>Párrafos cortos: una idea por párrafo.</li>
+          <li>Negrita solo para jerarquizar información clave.</li>
+          <li>El tono cambia según el destinatario: identificarlo antes de escribir.</li>
+        </ul>
+
+        <h3>Fórmulas fijas</h3>
+        <div class="tabla-scroll">
+          <table class="w-tabla">
+            <thead><tr><th>Elemento</th><th>Texto</th></tr></thead>
+            <tbody>
+              <tr><td>Saludo oficial</td><td>Estimadas Familias:</td></tr>
+              <tr><td>Cierre oficial</td><td>Saludos cordiales, Colegio Westminster</td></tr>
+              <tr><td>Firma individual</td><td>Nombre Apellido / Cargo / Colegio Westminster</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Correo institucional (Gmail)</h3>
+        <ul>
+          <li>Fuente Sans Serif predeterminada; no mezclar tipografías.</li>
+          <li>No justificar el texto.</li>
+          <li>Azul Institucional solo para encabezados.</li>
+          <li>Jerarquía con negrita, no con colores. Evitar el rojo en exceso.</li>
+        </ul>
+
+        <h3>Tipos de documento</h3>
+        <div class="tabla-scroll">
+          <table class="w-tabla">
+            <thead><tr><th>Tipo</th><th>Destinatario habitual</th><th>Tono</th></tr></thead>
+            <tbody>
+              <tr><td>Comunicado general</td><td>Familias</td><td>Formal cercano</td></tr>
+              <tr><td>Circular interna</td><td>Docentes y personal</td><td>Directo funcional</td></tr>
+              <tr><td>Nota institucional</td><td>Directivos</td><td>Formal estructurado</td></tr>
+              <tr><td>Informe</td><td>Directivos</td><td>Formal ejecutivo</td></tr>
+              <tr><td>Comunicación interinstitucional</td><td>Facultades y otros colegios</td><td>Formal colegiado</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="subpanel contenido" id="inst-tono">
+        <h3>Familias</h3>
+        <p>Formal pero cercano, cálido sin ser informal. Lenguaje claro, sin tecnicismos.</p>
+        <ul>
+          <li>Saludo fijo "Estimadas Familias:" y cierre fijo "Saludos cordiales, Colegio Westminster".</li>
+          <li>Claridad sobre procedimientos, fechas y expectativas.</li>
+          <li>Explicar la jerga pedagógica o administrativa, o evitarla.</li>
+          <li>Tono de acompañamiento, no de autoridad distante.</li>
+          <li>En comunicados urgentes: directo, sin alarmismo.</li>
+        </ul>
+
+        <h3>Docentes y personal</h3>
+        <p>Directo y funcional. Profesional sin exceso de formalidad; se habla entre pares.</p>
+        <ul>
+          <li>Por nombre o cargo, según el contexto. Cierre variable: "Saludos", o nombre y cargo.</li>
+          <li>Información operativa clara: qué, cuándo, quién y cómo.</li>
+          <li>Se puede usar vocabulario pedagógico e institucional sin explicarlo.</li>
+          <li>Tono colaborativo, no de mando vertical, salvo en comunicaciones de conducción.</li>
+        </ul>
+
+        <h3>Directivos</h3>
+        <p>Formal, estructurado y preciso.</p>
+        <ul>
+          <li>Tratamiento por cargo: "Estimado/a [Cargo]:".</li>
+          <li>Cierre: "Saludos cordiales" + nombre completo + cargo + Colegio Westminster.</li>
+          <li>Estructura clara: contexto, desarrollo y conclusión o solicitud.</li>
+          <li>Datos concretos en reportes y propuestas.</li>
+        </ul>
+
+        <h3>Otras instituciones educativas</h3>
+        <p>Formal colegiado, de paridad entre instituciones.</p>
+        <ul>
+          <li>Tratamiento por cargo o por nombre institucional.</li>
+          <li>Propósito explícito: convenio, invitación, solicitud o respuesta.</li>
+        </ul>
+      </div>
+
+      <p class="fuente-nota">Fuente: Manual de Identidad Visual y Procedimiento de Comunicación del Colegio Westminster 2026.</p>
+    </section>
+
+    <!-- DIGITAL -->
+    <section class="tab-panel" id="tab-digital">
+      <h2 class="w-titulo">Proyecto Educativo Tecnológico Digital</h2>
+      <p class="w-bajada">Fundamentación, objetivos por nivel e hitos 2026 del Departamento de Tecnología.</p>
+
+      <div class="subtabs-nav subtabs-nav--separado" data-grupo="dig">
+        <button class="subtab-btn activo" data-sub="dig-proyecto">Proyecto</button>
+        <button class="subtab-btn" data-sub="dig-dimensiones">Dimensiones</button>
+        <button class="subtab-btn" data-sub="dig-modelos">Modelos</button>
+        <button class="subtab-btn" data-sub="dig-objetivos">Objetivos por nivel</button>
+        <button class="subtab-btn" data-sub="dig-hitos">Hitos 2026</button>
+      </div>
+
+      <!-- Proyecto -->
+      <div class="subpanel activo contenido" id="dig-proyecto">
+        <h3>Introducción</h3>
+        <p>El Colegio Westminster asume el desafío de integrar la alfabetización digital como eje transversal en todos los niveles. El proyecto busca que la tecnología sea una herramienta significativa de aprendizaje, fortaleciendo las competencias docentes, la motivación de los estudiantes y la cultura de innovación pedagógica.</p>
+        <p>Después de tres años de avances en infraestructura y soporte, a partir de 2025 se inició una nueva etapa: pasar del uso técnico al uso pedagógico de la tecnología.</p>
+
+        <div class="cita">El proyecto no viene a imponer tareas, sino a facilitar y potenciar las que ya hacemos.</div>
+
+        <h3>Marcos de referencia</h3>
+        <ul>
+          <li>UNESCO — Marco de Competencias Docentes en TIC (2018)</li>
+          <li>DigCompEdu — Comisión Europea (2017)</li>
+          <li>Plan Estratégico de Educación Digital — DGCyE Buenos Aires</li>
+          <li>Modelos TPACK y SAMR de integración tecnológica</li>
+        </ul>
+
+        <h3>Propósito</h3>
+        <p>Transformar la alfabetización digital en un eje transversal de la propuesta educativa, fortaleciendo las competencias docentes y estudiantiles y consolidando una cultura de innovación.</p>
+        <ul>
+          <li>Desarrollar competencias digitales docentes adaptadas a cada nivel.</li>
+          <li>Integrar recursos tecnológicos y estrategias didácticas en las planificaciones.</li>
+          <li>Implementar proyectos interdisciplinarios digitales en todos los niveles.</li>
+          <li>Consolidar una cultura digital colaborativa, inclusiva y sostenible.</li>
+        </ul>
+
+        <h3>Perfil docente digital</h3>
+        <ul>
+          <li>Manejo funcional de las plataformas institucionales.</li>
+          <li>Diseño y uso de recursos digitales para el aprendizaje activo.</li>
+          <li>Comunicación digital efectiva con estudiantes y familias.</li>
+          <li>Promoción de la ciudadanía digital responsable.</li>
+        </ul>
+
+        <h3>Niveles de competencia digital docente</h3>
+        <div class="tabla-scroll">
+          <table class="w-tabla">
+            <thead><tr><th>Nivel</th><th>Descripción</th><th>Objetivo</th></tr></thead>
+            <tbody>
+              <tr><td>Inicial</td><td>No tiene dominio de herramientas digitales</td><td>Acceder a capacitaciones iniciales</td></tr>
+              <tr><td>Básico</td><td>Usa herramientas con apoyo; ofimática y Google Workspace</td><td>Integrar recursos digitales simples</td></tr>
+              <tr><td>Intermedio</td><td>Integra tecnología en la enseñanza y explora herramientas para su área</td><td>Liderar pequeños proyectos digitales</td></tr>
+              <tr><td>Avanzado</td><td>Promueve la innovación pedagógica digital</td><td>Ser referente institucional</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Herramientas institucionales</h3>
+        <div class="tabla-scroll">
+          <table class="w-tabla">
+            <thead><tr><th>Básicas</th><th>Prioritarias</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><ul><li>Mail institucional</li><li>Ofimática: texto, planilla y presentación</li><li>Google Workspace y Drive</li><li>YouTube</li><li>Classroom</li><li>Apoyo multimedia</li></ul></td>
+                <td><ul><li>Canva</li><li>Padlet</li><li>Kahoot, Quizizz, Formularios de Google</li><li>Hojas de cálculo con uso avanzado</li></ul></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Cada área parte de esta propuesta y suma las herramientas que considere clave para sus objetivos y contenidos, siempre con un propósito pedagógico claro.</p>
+
+        <h3>Líneas de acción</h3>
+        <div class="tabla-scroll">
+          <table class="w-tabla">
+            <thead><tr><th>Línea</th><th>Descripción</th></tr></thead>
+            <tbody>
+              <tr><td>Estructuras didácticas</td><td>Carga sistemática de planificación anual, unidades, secuencias y clases, para un ecosistema pedagógico trazable</td></tr>
+              <tr><td>Sitio de difusión</td><td>Espacio para visibilizar acciones, proyectos, recursos y buenas prácticas del área</td></tr>
+              <tr><td>Feria Digital</td><td>Evento virtual para mostrar y celebrar los proyectos de docentes y estudiantes</td></tr>
+              <tr><td>Westminster Hub</td><td>El Aula 10 evoluciona a Laboratorio de Aprendizaje y Creación Digital. "En el Hub, aprendemos creando."</td></tr>
+              <tr><td>Insignias y Líderes Digitales</td><td>En evaluación para 2026, según los avances del área</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Indicadores de éxito 2026</h3>
+        <div class="tabla-scroll">
+          <table class="w-tabla">
+            <thead><tr><th>Indicador</th><th>Meta</th></tr></thead>
+            <tbody>
+              <tr><td>Docentes que participan de micro formaciones</td><td>70 %</td></tr>
+              <tr><td>Docentes que avanzan al menos un nivel digital</td><td>60 %</td></tr>
+              <tr><td>Experiencias pedagógicas documentadas</td><td>15 por mes</td></tr>
+              <tr><td>Participación en la Feria Digital</td><td>60 %</td></tr>
+              <tr><td>Percepción positiva del cambio</td><td>80 %</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Dimensiones -->
+      <div class="subpanel contenido" id="dig-dimensiones">
+        <p>El Modelo Westminster de Alfabetización Digital integra diez dimensiones. Cada docente y cada ciclo se compromete a promover el desarrollo progresivo de las competencias digitales, comunicativas, cognitivas y ciudadanas.</p>
+        <div class="tabla-scroll">
+          <table class="w-tabla">
+            <thead><tr><th>Dimensión</th><th>Qué significa</th><th>Ejemplos</th></tr></thead>
+            <tbody>
+              <tr><td>Disparador del aprendizaje</td><td>Motiva, despierta curiosidad y contextualiza contenidos</td><td>Videos, simulaciones, imágenes 360°, realidad aumentada</td></tr>
+              <tr><td>Mediador del aprendizaje</td><td>Acompaña la construcción del conocimiento y la experimentación</td><td>Apps educativas, hojas de cálculo, simuladores</td></tr>
+              <tr><td>Herramienta de producción</td><td>Permite comunicar y aplicar lo aprendido con producciones propias</td><td>Presentaciones, videos, infografías, podcasts, modelos 3D</td></tr>
+              <tr><td>Espacio de colaboración</td><td>Facilita el trabajo cooperativo en entornos compartidos</td><td>Documentos colaborativos, foros, Padlet, aulas virtuales</td></tr>
+              <tr><td>Canal de comunicación institucional</td><td>Difunde proyectos y fortalece la identidad institucional</td><td>Micrositios, boletines digitales, muestras virtuales</td></tr>
+              <tr><td>Gestión y evaluación</td><td>Registra y valora procesos de aprendizaje con trazabilidad</td><td>Rúbricas digitales, formularios, portfolios</td></tr>
+              <tr><td>Información y análisis</td><td>Buscar, seleccionar, interpretar y validar información</td><td>Investigación guiada, análisis de datos, lectura crítica de medios</td></tr>
+              <tr><td>Entorno expandido</td><td>Extiende el aula hacia espacios virtuales y otras culturas</td><td>Intercambios online, visitas virtuales, experiencias 3D</td></tr>
+              <tr><td>Aprendizaje del uso de la tecnología</td><td>La tecnología como objeto de conocimiento: uso seguro y autónomo</td><td>Manejo de dispositivos, organización de archivos, navegación segura</td></tr>
+              <tr><td>Ciudadanía digital</td><td>Uso ético, crítico y responsable; derechos y deberes digitales</td><td>Huella digital, respeto en redes, privacidad de datos</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Modelos -->
+      <div class="subpanel contenido" id="dig-modelos">
+        <h3>TPACK</h3>
+        <p>Describe los conocimientos que el docente necesita para integrar la tecnología: contenido (CK), pedagogía (PK) y tecnología (TK). La integración equilibrada de los tres es el punto en el que la tecnología se usa de forma pedagógicamente sólida y pertinente para la disciplina.</p>
+
+        <h3>SAMR</h3>
+        <div class="tabla-scroll">
+          <table class="w-tabla">
+            <thead><tr><th>Nivel</th><th>Qué pasa</th><th>Ejemplo</th></tr></thead>
+            <tbody>
+              <tr><td>Sustitución</td><td>Reemplaza una herramienta sin cambios significativos</td><td>Escribir en un procesador en lugar de a mano</td></tr>
+              <tr><td>Aumento</td><td>Sustituye con mejoras funcionales</td><td>Corrector ortográfico, comentarios en línea</td></tr>
+              <tr><td>Modificación</td><td>Rediseña partes importantes de la tarea</td><td>Revisión colaborativa en línea entre estudiantes</td></tr>
+              <tr><td>Redefinición</td><td>Crea tareas antes impensables</td><td>Podcast o video compartido para recibir devoluciones</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Sustitución y Aumento mejoran el proceso; Modificación y Redefinición lo transforman.</p>
+
+        <h3>Taxonomía de Bloom (revisada)</h3>
+        <p>Recordar · Comprender · Aplicar · Analizar · Evaluar · Crear.</p>
+
+        <h3>Cómo se articulan</h3>
+        <p>TPACK define los saberes docentes; SAMR, la profundidad de la integración en la tarea; Bloom, el nivel cognitivo buscado. En los niveles básicos de SAMR los estudiantes suelen operar en recordar, comprender y aplicar; en Modificación y Redefinición se favorecen analizar, evaluar y crear.</p>
+      </div>
+
+      <!-- Objetivos por nivel -->
+      <div class="subpanel contenido" id="dig-objetivos">
+        <div class="cita">La tecnología no reemplaza la enseñanza: amplía sus posibilidades.</div>
+        <p>Objetivos SMART con continuidad formativa desde el Nivel Inicial hasta el Secundario Superior.</p>
+        <div class="tabla-scroll">
+          <table class="w-tabla">
+            <thead><tr><th>Ciclo</th><th>Objetivo</th><th>Meta medible</th></tr></thead>
+            <tbody>
+              <tr><td>Maternal</td><td>Reconocer la tecnología como parte del entorno cotidiano</td><td>Al menos tres experiencias anuales con recursos sencillos</td></tr>
+              <tr><td>2.º ciclo Inicial</td><td>Explorar de forma lúdica y creativa para representar ideas, imágenes y sonidos</td><td>Una producción digital trimestral por sección</td></tr>
+              <tr><td>1.er ciclo Primario</td><td>Nociones básicas aplicadas a comunicación, lectura y resolución de problemas</td><td>Herramientas digitales en al menos tres proyectos interdisciplinarios al año</td></tr>
+              <tr><td>2.º ciclo Primario</td><td>Uso funcional y colaborativo para investigar, producir y comunicar</td><td>Al menos cuatro productos digitales anuales</td></tr>
+              <tr><td>Ciclo Básico Secundario</td><td>Gestionar información, resolver problemas y comunicar de forma crítica y creativa</td><td>Al menos dos proyectos interdisciplinarios anuales con recursos digitales</td></tr>
+              <tr><td>Ciclo Superior Secundario</td><td>Integrar herramientas digitales en investigación, análisis económico y gestión de proyectos</td><td>Al menos dos productos anuales con uso avanzado de TIC</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Evaluación y seguimiento</h3>
+        <ul>
+          <li>Revisión semestral de avances por nivel y ciclo.</li>
+          <li>Registro de evidencias en proyectos y producciones digitales.</li>
+          <li>Actualización anual del tablero de indicadores.</li>
+          <li>Incorporación de resultados y mejoras al PEI.</li>
+        </ul>
+      </div>
+
+      <!-- Hitos 2026 -->
+      <div class="subpanel contenido" id="dig-hitos">
+        <span class="w-rotulo">Nivel</span>
+        <div class="subtabs-nav subtabs-nav--compacto" id="hitos-niveles"></div>
+        <span class="w-rotulo">Sala o año</span>
+        <div class="subtabs-nav" id="hitos-anios"></div>
+        <div id="hitos-contenido"></div>
+
+        <h3>Seguimiento del proyecto</h3>
+        <ul>
+          <li>Trazabilidad: el seguimiento se basa en la carga de planificaciones, unidades y clases en la plataforma institucional.</li>
+          <li>Se verifica el uso de las herramientas prioritarias con un propósito pedagógico claro.</li>
+          <li>Alertas tempranas para que el proyecto potencie y no sobrecargue a los docentes.</li>
+          <li>Se observa si el estudiante ejerce su agencia: si decide cómo y cuándo usar la IA de manera ética.</li>
+          <li>Cada hito de IA se valida con el marco ROAM-X de la UNESCO.</li>
+        </ul>
+      </div>
+
+      <p class="fuente-nota">Fuente: Proyecto Educativo Tecnológico Digital 2025–2026 y Hitos 2026, Departamento de Tecnología.</p>
     </section>
 
   </main>
@@ -390,6 +841,7 @@
     </div>
   </footer>
 
+  <script src="digital-hitos.js"></script>
   <script>
     // TABS
     const tabBtns = document.querySelectorAll('.tab-btn');
@@ -467,6 +919,104 @@
       document.getElementById('txt-compra').value = '';
       categoriaActual = null;
     });
+
+    // SUBTABS — Institucional y Digital
+    document.querySelectorAll('.subtabs-nav[data-grupo]').forEach(nav => {
+      const panel = nav.closest('.tab-panel');
+      nav.querySelectorAll('.subtab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          nav.querySelectorAll('.subtab-btn').forEach(b => b.classList.toggle('activo', b === btn));
+          panel.querySelectorAll(':scope > .subpanel').forEach(p => p.classList.toggle('activo', p.id === btn.dataset.sub));
+        });
+      });
+    });
+
+    // HITOS 2026 — nivel → año → tabla
+    const nivelesNav = document.getElementById('hitos-niveles');
+    const aniosNav = document.getElementById('hitos-anios');
+    const hitosCont = document.getElementById('hitos-contenido');
+
+    function crear(tag, clase, texto) {
+      const el = document.createElement(tag);
+      if (clase) el.className = clase;
+      if (texto) el.textContent = texto;
+      return el;
+    }
+
+    function lista(items) {
+      const ul = crear('ul');
+      items.forEach(t => ul.appendChild(crear('li', null, t)));
+      return ul;
+    }
+
+    function tabla(encabezados, filas) {
+      const scroll = crear('div', 'tabla-scroll');
+      const t = crear('table', 'w-tabla');
+      const trh = crear('tr');
+      encabezados.forEach(h => trh.appendChild(crear('th', null, h)));
+      t.appendChild(crear('thead')).appendChild(trh);
+      const tb = crear('tbody');
+      filas.forEach(celdas => {
+        const tr = crear('tr');
+        celdas.forEach(c => tr.appendChild(c));
+        tb.appendChild(tr);
+      });
+      t.appendChild(tb);
+      scroll.appendChild(t);
+      return scroll;
+    }
+
+    function celda(contenido, clase) {
+      const td = crear('td', clase);
+      if (typeof contenido === 'string') td.textContent = contenido;
+      else td.appendChild(contenido);
+      return td;
+    }
+
+    function mostrarAnio(nivel, i) {
+      aniosNav.querySelectorAll('.subtab-btn').forEach((b, j) => b.classList.toggle('activo', j === i));
+      const anio = nivel.anios[i];
+      hitosCont.replaceChildren();
+      nivel.intro.forEach(p => hitosCont.appendChild(crear('p', null, p)));
+
+      if (anio.descripcion) {
+        hitosCont.appendChild(crear('p', null, anio.descripcion));
+        return;
+      }
+
+      hitosCont.appendChild(crear('h3', null, anio.nombre));
+      hitosCont.appendChild(tabla(['Período', 'Hitos', 'Herramientas'],
+        anio.periodos.map((p, k) => [
+          celda(PERIODOS_2026[k], 'col-periodo'),
+          celda(lista(p.hitos)),
+          celda(lista(p.herramientas))
+        ])));
+
+      hitosCont.appendChild(crear('h3', null, 'Inteligencia artificial'));
+      hitosCont.appendChild(tabla(['Hito', 'Reflexión (IA — UNESCO)', 'ROAM-X'],
+        [[celda(anio.ia.hito), celda(anio.ia.unesco), celda(anio.ia.roamx)]]));
+    }
+
+    function mostrarNivel(clave) {
+      nivelesNav.querySelectorAll('.subtab-btn').forEach(b => b.classList.toggle('activo', b.dataset.nivel === clave));
+      const nivel = HITOS_2026[clave];
+      aniosNav.replaceChildren();
+      nivel.anios.forEach((a, i) => {
+        const b = crear('button', 'subtab-btn', a.nombre);
+        b.addEventListener('click', () => mostrarAnio(nivel, i));
+        aniosNav.appendChild(b);
+      });
+      const primero = nivel.anios.findIndex(a => a.periodos);
+      mostrarAnio(nivel, primero >= 0 ? primero : 0);
+    }
+
+    Object.entries(HITOS_2026).forEach(([clave, nivel]) => {
+      const b = crear('button', 'subtab-btn', nivel.nombre);
+      b.dataset.nivel = clave;
+      b.addEventListener('click', () => mostrarNivel(clave));
+      nivelesNav.appendChild(b);
+    });
+    mostrarNivel('inicial');
   </script>
 
 </body>
