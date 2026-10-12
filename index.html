@@ -11,12 +11,13 @@
       max-width: 860px;
       width: 100%;
       margin: 0 auto;
-      padding: 0 24px 40px;
+      padding: 0 24px 48px;
     }
 
-    /* ── TABS ── */
+    /* TABS */
     .tabs-nav {
       display: flex;
+      flex-wrap: wrap;
       border-bottom: 2px solid #ddd;
       margin-bottom: 32px;
     }
@@ -25,92 +26,209 @@
       border: none;
       border-bottom: 3px solid transparent;
       margin-bottom: -2px;
-      padding: 14px 20px;
+      padding: 14px 18px;
       font-family: 'Montserrat', sans-serif;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
       letter-spacing: 0.4px;
       color: var(--w-gris);
       cursor: pointer;
       text-transform: uppercase;
+      white-space: nowrap;
     }
-    .tab-btn:hover {
-      color: var(--w-cuerpo);
-    }
+    .tab-btn:hover { color: var(--w-cuerpo); }
     .tab-btn.activo {
       color: var(--w-azul);
       border-bottom-color: var(--w-azul);
     }
-
     .tab-panel { display: none; }
     .tab-panel.activo { display: block; }
 
-    /* ── INICIO ── */
-    .inicio-bloque {
-      margin-bottom: 28px;
-    }
-    .inicio-bloque h2 {
-      font-size: 15px;
-      font-weight: 600;
+    /* BLOQUE */
+    .bloque { margin-bottom: 36px; }
+    .bloque-titulo {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
       color: var(--w-azul);
-      margin-bottom: 10px;
-    }
-    .inicio-bloque p {
-      font-size: 14px;
-      line-height: 1.7;
-      color: var(--w-cuerpo);
-      margin-bottom: 8px;
+      margin-bottom: 14px;
     }
 
-    .accesos-rapidos {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 10px;
-      margin-top: 8px;
+    /* ÁREAS */
+    .areas-lista {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
     }
-    .acceso-rapido {
-      display: block;
-      padding: 12px 16px;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 600;
+    .area-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
       color: var(--w-azul);
+      border: 1px solid var(--w-azul);
+      padding: 5px 12px;
+    }
+
+    /* HERRAMIENTAS */
+    .herramientas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+      gap: 10px;
+    }
+    .herramienta {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      text-align: left;
+      font-family: 'Montserrat', sans-serif;
       background: #fff;
       border: 1px solid #ddd;
       border-left: 4px solid var(--w-azul);
+      cursor: pointer;
     }
-    .acceso-rapido:hover {
-      border-left-color: var(--w-rojo);
-    }
-
-    /* ── SOLICITUDES ── */
-    .acciones {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-    .accion {
+    .herramienta:hover { border-left-color: var(--w-rojo); }
+    .herramienta strong {
       display: block;
-      text-decoration: none;
-      color: var(--w-cuerpo);
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-    .accion:hover {
-      border-left-color: var(--w-rojo);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-    }
-    .accion strong {
-      display: block;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
-      margin-bottom: 4px;
+      color: var(--w-azul);
+      margin-bottom: 5px;
     }
-
-    .nota {
+    .herramienta span {
       font-size: 12px;
       color: var(--w-gris);
-      margin-top: 16px;
+      line-height: 1.5;
+    }
+
+    /* ALERTAS */
+    .alertas-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 580px) { .alertas-grid { grid-template-columns: 1fr; } }
+    .alerta-box {
+      padding: 16px;
+      border: 1px solid #ddd;
+      min-height: 72px;
+    }
+    .alerta-box h3 {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--w-azul);
+      margin-bottom: 10px;
+    }
+    .alerta-vacia {
+      font-size: 13px;
+      color: var(--w-gris);
+    }
+
+    /* FORMULARIO */
+    .form-seccion { margin-bottom: 22px; }
+    .form-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--w-azul);
+      margin-bottom: 8px;
+    }
+    .form-select {
+      width: 100%;
+      padding: 10px 12px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      color: var(--w-cuerpo);
+      border: 1px solid #ddd;
+      background: #fff;
+      box-sizing: border-box;
+    }
+    .form-select:focus { outline: none; border-color: var(--w-azul); }
+
+    .form-textarea {
+      width: 100%;
+      padding: 10px 12px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      color: var(--w-cuerpo);
+      border: 1px solid #ddd;
+      background: #fff;
+      box-sizing: border-box;
+      min-height: 80px;
+      resize: vertical;
+    }
+    .form-textarea:focus { outline: none; border-color: var(--w-azul); }
+
+    .categorias-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+      gap: 8px;
+    }
+    .categoria-btn {
+      padding: 12px 14px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--w-cuerpo);
+      background: #fff;
+      border: 1px solid #ddd;
+      border-left: 3px solid #ddd;
+      cursor: pointer;
+      text-align: left;
+    }
+    .categoria-btn:hover { border-left-color: var(--w-azul); color: var(--w-azul); }
+    .categoria-btn.seleccionado {
+      border-left-color: var(--w-azul);
+      color: var(--w-azul);
+      background: #f4f7fd;
+    }
+
+    .campo-compra { display: none; }
+
+    .form-submit {
+      padding: 12px 28px;
+      background: var(--w-azul);
+      color: #fff;
+      border: none;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+    }
+    .form-submit:hover { background: var(--w-rojo); }
+    .form-submit:disabled { background: #bbb; cursor: default; }
+
+    /* CONFIRMACIÓN */
+    .confirmacion {
+      display: none;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-left: 4px solid var(--w-azul);
+    }
+    .confirmacion p { font-size: 13px; line-height: 1.6; margin-bottom: 6px; }
+    .confirmacion .ruta-info {
+      font-size: 11px;
+      color: var(--w-gris);
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #eee;
+    }
+
+    /* PRÓXIMAMENTE */
+    .proximamente {
+      padding: 24px;
+      border: 1px solid #ddd;
+      font-size: 13px;
+      color: var(--w-gris);
+      line-height: 1.6;
     }
   </style>
 </head>
@@ -126,60 +244,148 @@
     <nav class="tabs-nav">
       <button class="tab-btn activo" data-tab="inicio">Inicio</button>
       <button class="tab-btn" data-tab="solicitudes">Solicitudes</button>
+      <button class="tab-btn" data-tab="usuario-nuevo">Usuario nuevo</button>
+      <button class="tab-btn" data-tab="planificacion">Planificación</button>
+      <button class="tab-btn" data-tab="identidad">Identidad</button>
     </nav>
 
     <!-- INICIO -->
     <section class="tab-panel activo" id="tab-inicio">
 
-      <div class="inicio-bloque">
-        <h2>Portal institucional</h2>
-        <p>
-          Este portal centraliza las solicitudes de servicio técnico, mantenimiento,
-          reservas de espacios y agendamiento de eventos del Colegio Westminster.
+      <div class="bloque">
+        <p class="bloque-titulo">Áreas</p>
+        <p style="font-size:13px; color:var(--w-cuerpo); line-height:1.7; margin-bottom:16px;">
+          Este portal fue construido para dar soporte operativo a tres áreas del Colegio Westminster.
         </p>
-        <p>
-          Cada solicitud genera automáticamente un registro en el sistema y, cuando corresponde,
-          un evento en el calendario institucional. Para que algo aparezca en el calendario,
-          tiene que pasar por el portal.
-        </p>
+        <div class="areas-lista">
+          <span class="area-tag">Institucional</span>
+          <span class="area-tag">ST</span>
+          <span class="area-tag">Alfabetización Digital</span>
+        </div>
       </div>
 
-      <div class="inicio-bloque w-recuadro" style="padding: 20px;">
-        <h2>¿Qué podés hacer desde acá?</h2>
-        <div class="accesos-rapidos" style="margin-top: 14px;">
-          <a href="#" class="acceso-rapido" data-goto="solicitudes">Reportar problema técnico</a>
-          <a href="#" class="acceso-rapido" data-goto="solicitudes">Pedir mantenimiento</a>
-          <a href="#" class="acceso-rapido" data-goto="solicitudes">Reservar un espacio</a>
-          <a href="#" class="acceso-rapido" data-goto="solicitudes">Agendar evento o visita</a>
+      <div class="bloque">
+        <p class="bloque-titulo">Herramientas disponibles</p>
+        <div class="herramientas-grid">
+          <button class="herramienta" data-goto="usuario-nuevo">
+            <strong>Usuario nuevo</strong>
+            <span>Alta de personal y gestión de accesos institucionales</span>
+          </button>
+          <button class="herramienta" data-goto="planificacion">
+            <strong>Planificación de clase / evento</strong>
+            <span>Reserva de espacios y agendamiento institucional</span>
+          </button>
+          <button class="herramienta" data-goto="solicitudes">
+            <strong>Solicitudes / Alertas</strong>
+            <span>ST, mantenimiento, compras y estado del sistema</span>
+          </button>
+          <button class="herramienta" data-goto="identidad">
+            <strong>Manual de identidad visual</strong>
+            <span>Colores, tipografía y componentes Westminster</span>
+          </button>
         </div>
       </div>
 
     </section>
 
-    <!-- SOLICITUDES -->
+    <!-- SOLICITUDES / ALERTAS -->
     <section class="tab-panel" id="tab-solicitudes">
 
-      <p class="w-seccion-titulo">¿Qué necesitás?</p>
-      <div class="acciones">
-        <a href="#" class="accion w-recuadro w-recuadro--acento">
-          <strong>Reportar problema técnico</strong>
-          <span class="w-texto-secundario">PC, internet, proyector, impresora</span>
-        </a>
-        <a href="#" class="accion w-recuadro w-recuadro--acento">
-          <strong>Pedir mantenimiento</strong>
-          <span class="w-texto-secundario">Aire, mueble, electricidad, plomería</span>
-        </a>
-        <a href="#" class="accion w-recuadro w-recuadro--acento">
-          <strong>Reservar espacio</strong>
-          <span class="w-texto-secundario">Sala de video, informática, SUM, gimnasio</span>
-        </a>
-        <a href="#" class="accion w-recuadro w-recuadro--acento">
-          <strong>Agendar evento o visita</strong>
-          <span class="w-texto-secundario">Evento institucional, salida, clase especial</span>
-        </a>
+      <div class="bloque">
+        <p class="bloque-titulo">Alertas</p>
+        <div class="alertas-grid">
+          <div class="alerta-box">
+            <h3>Sistema</h3>
+            <p class="alerta-vacia">Sin alertas activas.</p>
+          </div>
+          <div class="alerta-box">
+            <h3>Mis solicitudes</h3>
+            <p class="alerta-vacia">Sin solicitudes recientes.</p>
+          </div>
+        </div>
       </div>
-      <p class="nota">Completá los datos de la solicitud. El sistema determina automáticamente el área responsable y la prioridad.</p>
 
+      <div class="bloque">
+        <p class="bloque-titulo">Nueva solicitud</p>
+
+        <div id="form-solicitud">
+
+          <div class="form-seccion">
+            <label class="form-label" for="sel-sector">Nivel / Sector</label>
+            <select class="form-select" id="sel-sector">
+              <option value="">— Seleccioná —</option>
+              <option>Jardín</option>
+              <option>Primaria</option>
+              <option>Secundaria</option>
+              <option>Administración</option>
+              <option>Dirección</option>
+              <option>Espacios comunes</option>
+            </select>
+          </div>
+
+          <div class="form-seccion">
+            <label class="form-label">Categoría</label>
+            <div class="categorias-grid">
+              <button class="categoria-btn" data-categoria="Sin internet / sin acceso">Sin internet / sin acceso</button>
+              <button class="categoria-btn" data-categoria="PC no enciende / pantalla negra">PC no enciende / pantalla negra</button>
+              <button class="categoria-btn" data-categoria="Proyector sin imagen / no conecta">Proyector sin imagen / no conecta</button>
+              <button class="categoria-btn" data-categoria="Periférico roto (mouse, teclado, auriculares)">Periférico roto</button>
+              <button class="categoria-btn" data-categoria="Consulta o instalación de software">Software / consulta</button>
+              <button class="categoria-btn" data-categoria="Aire acondicionado">Aire acondicionado</button>
+              <button class="categoria-btn" data-categoria="Electricidad / luz / tomacorriente">Electricidad / luz</button>
+              <button class="categoria-btn" data-categoria="Mueble roto / puerta / ventana">Mueble / puerta / ventana</button>
+              <button class="categoria-btn" data-categoria="Plomería">Plomería</button>
+              <button class="categoria-btn" data-categoria="Limpieza extraordinaria">Limpieza extraordinaria</button>
+              <button class="categoria-btn" data-categoria="Solicitud de compra">Solicitud de compra</button>
+            </div>
+          </div>
+
+          <div class="form-seccion campo-compra" id="campo-compra">
+            <label class="form-label" for="txt-compra">Descripción de la compra</label>
+            <textarea class="form-textarea" id="txt-compra" placeholder="Indicá qué necesitás adquirir y para qué área."></textarea>
+          </div>
+
+          <div class="form-seccion">
+            <button class="form-submit" id="btn-enviar" disabled>Enviar solicitud</button>
+          </div>
+
+        </div>
+
+        <div class="confirmacion" id="confirmacion">
+          <p><strong>Solicitud registrada.</strong></p>
+          <p id="conf-texto"></p>
+          <p class="ruta-info" id="conf-ruta"></p>
+          <div style="margin-top:16px;">
+            <button class="form-submit" id="btn-nueva" style="padding:8px 20px;">Nueva solicitud</button>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- USUARIO NUEVO -->
+    <section class="tab-panel" id="tab-usuario-nuevo">
+      <p class="bloque-titulo">Usuario nuevo</p>
+      <div class="proximamente">
+        Alta de personal y gestión de accesos institucionales. Próximamente disponible.
+      </div>
+    </section>
+
+    <!-- PLANIFICACIÓN -->
+    <section class="tab-panel" id="tab-planificacion">
+      <p class="bloque-titulo">Planificación de clase / evento</p>
+      <div class="proximamente">
+        Reserva de espacios y agendamiento institucional con integración a Google Calendar. Próximamente disponible.
+      </div>
+    </section>
+
+    <!-- IDENTIDAD VISUAL -->
+    <section class="tab-panel" id="tab-identidad">
+      <p class="bloque-titulo">Manual de identidad visual</p>
+      <div class="proximamente">
+        Manual de identidad visual Westminster: colores, tipografía y componentes. Próximamente disponible.
+      </div>
     </section>
 
   </main>
@@ -190,21 +396,76 @@
   </footer>
 
   <script>
-    const btns = document.querySelectorAll('.tab-btn');
-    const panels = document.querySelectorAll('.tab-panel');
+    // TABS
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabPanels = document.querySelectorAll('.tab-panel');
 
     function activarTab(nombre) {
-      btns.forEach(b => b.classList.toggle('activo', b.dataset.tab === nombre));
-      panels.forEach(p => p.classList.toggle('activo', p.id === 'tab-' + nombre));
+      tabBtns.forEach(b => b.classList.toggle('activo', b.dataset.tab === nombre));
+      tabPanels.forEach(p => p.classList.toggle('activo', p.id === 'tab-' + nombre));
     }
 
-    btns.forEach(btn => btn.addEventListener('click', () => activarTab(btn.dataset.tab)));
+    tabBtns.forEach(btn => btn.addEventListener('click', () => activarTab(btn.dataset.tab)));
 
     document.querySelectorAll('[data-goto]').forEach(el => {
       el.addEventListener('click', e => {
         e.preventDefault();
         activarTab(el.dataset.goto);
       });
+    });
+
+    // SOLICITUDES — ruteo automático
+    const ruteo = {
+      'Sin internet / sin acceso':                      { equipo: 'ST',              prioridad: 'Crítico' },
+      'PC no enciende / pantalla negra':                { equipo: 'ST',              prioridad: 'Alto'    },
+      'Proyector sin imagen / no conecta':              { equipo: 'ST',              prioridad: 'Alto'    },
+      'Periférico roto (mouse, teclado, auriculares)':  { equipo: 'ST',              prioridad: 'Medio'   },
+      'Consulta o instalación de software':             { equipo: 'ST',              prioridad: 'Bajo'    },
+      'Aire acondicionado':                             { equipo: 'Mantenimiento',   prioridad: 'Alto'    },
+      'Electricidad / luz / tomacorriente':             { equipo: 'Mantenimiento',   prioridad: 'Alto'    },
+      'Mueble roto / puerta / ventana':                 { equipo: 'Mantenimiento',   prioridad: 'Medio'   },
+      'Plomería':                                       { equipo: 'Mantenimiento',   prioridad: 'Alto'    },
+      'Limpieza extraordinaria':                        { equipo: 'Mantenimiento',   prioridad: 'Bajo'    },
+      'Solicitud de compra':                            { equipo: 'ST + Mantenimiento', prioridad: 'Bajo', textoLibre: true }
+    };
+
+    let categoriaActual = null;
+
+    document.querySelectorAll('.categoria-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.categoria-btn').forEach(b => b.classList.remove('seleccionado'));
+        btn.classList.add('seleccionado');
+        categoriaActual = btn.dataset.categoria;
+
+        const esCompra = ruteo[categoriaActual]?.textoLibre;
+        document.getElementById('campo-compra').style.display = esCompra ? 'block' : 'none';
+        document.getElementById('btn-enviar').disabled = false;
+      });
+    });
+
+    document.getElementById('btn-enviar').addEventListener('click', () => {
+      const sector = document.getElementById('sel-sector').value;
+      if (!sector) { alert('Seleccioná el nivel o sector antes de enviar.'); return; }
+
+      const r = ruteo[categoriaActual];
+      document.getElementById('form-solicitud').style.display = 'none';
+      const conf = document.getElementById('confirmacion');
+      conf.style.display = 'block';
+      document.getElementById('conf-texto').textContent =
+        `"${categoriaActual}" — ${sector}.`;
+      document.getElementById('conf-ruta').textContent =
+        `Equipo: ${r.equipo} · Prioridad: ${r.prioridad}`;
+    });
+
+    document.getElementById('btn-nueva').addEventListener('click', () => {
+      document.getElementById('form-solicitud').style.display = 'block';
+      document.getElementById('confirmacion').style.display = 'none';
+      document.querySelectorAll('.categoria-btn').forEach(b => b.classList.remove('seleccionado'));
+      document.getElementById('campo-compra').style.display = 'none';
+      document.getElementById('btn-enviar').disabled = true;
+      document.getElementById('sel-sector').value = '';
+      document.getElementById('txt-compra').value = '';
+      categoriaActual = null;
     });
   </script>
 
